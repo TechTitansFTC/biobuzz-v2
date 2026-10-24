@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -42,7 +41,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
         telemetry.addData("frontRightMotorPower", getFrontRightMotorPower());
     }
 
-    public void fieldCentricDrive(double x, double y, double rotation) {
+    public void drive(double x, double y, double rotation) {
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Rotate the movement direction counter to the bot's rotation
