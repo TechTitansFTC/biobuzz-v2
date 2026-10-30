@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.game;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.CONTROL_HUB_LOGO_FACING_DIRECTION;
 import static org.firstinspires.ftc.teamcode.util.Constants.CONTROL_HUB_USB_FACING_DIRECTION;
+import static org.firstinspires.ftc.teamcode.util.PoseStorage.autonomousEndPose;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -19,6 +22,7 @@ public class TeleOp extends OpMode {
     DriveCommand driveCommand;
     IMU imu;
     GamepadEx gamepadEx;
+    Follower follower;
     @Override
     public void init () {
         // Objects
@@ -26,6 +30,10 @@ public class TeleOp extends OpMode {
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(CONTROL_HUB_LOGO_FACING_DIRECTION, CONTROL_HUB_USB_FACING_DIRECTION)));
 
         gamepadEx = new GamepadEx(gamepad1);
+        follower = org.firstinspires.ftc.teamcode.pedro.Constants.create(hardwareMap);
+
+        // Optional: Set starting pose if continuing from Autonomous
+        follower.setPose(autonomousEndPose);
 
         // Subsystems
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,imu,telemetry);

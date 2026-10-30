@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
@@ -17,8 +18,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 public class ScoringSubsystem extends SubsystemBase {
-    private final DcMotor pollenTurretMotor;
-    private final DcMotor nectarTurretMotor;
+    private final DcMotorEx pollenTurretMotor;
+    private final DcMotorEx nectarTurretMotor;
     private final CRServo pollenTurretServo;
     private final CRServo nectarTurretServo;
 
@@ -31,15 +32,16 @@ public class ScoringSubsystem extends SubsystemBase {
     public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        pollenTurretMotor = hardwareMap.get(DcMotor.class, "pollenTurretMotor");
-        nectarTurretMotor = hardwareMap.get(DcMotor.class, "nectarTurretMotor");
+        pollenTurretMotor = hardwareMap.get(DcMotorEx.class, "pollenTurretMotor");
+        nectarTurretMotor = hardwareMap.get(DcMotorEx.class, "nectarTurretMotor");
         pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurretServo");
         nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurretServo");
 
-        // 1. Initialize the AprilTag processor
+        pollenTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        nectarTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         aprilTag = new AprilTagProcessor.Builder().build();
 
-        // 2. Build the VisionPortal and attach the processor to the physical webcam
         pollenTurretCamera = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "pollenTurretCamera"))
                 .addProcessor(aprilTag)
@@ -48,7 +50,6 @@ public class ScoringSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // No parameters needed anymore
         telemetry.addData("Camera bearing", getBearing());
     }
 
@@ -68,33 +69,36 @@ public class ScoringSubsystem extends SubsystemBase {
         nectarTurretServo.setPower(power);
     }
 
-    // Removed the parameter from the method signature
+    public double getPollenTurretMotorRPM() {
+        double ticksPerSecond = pollenTurretMotor.getVelocity();
+
+        return (ticksPerSecond * 60) / 28.0;
+    }
+
+    public double getNectarTurretMotorRPM() {
+        double ticksPerSecond = nectarTurretMotor.getVelocity();
+
+        return (ticksPerSecond * 60) / 28.0;
+    }
+
     public Double getBearing() {
-        // Retrieve the detections directly from the processor instance
         List<AprilTagDetection> detections = aprilTag.getDetections();
 
         for (AprilTagDetection detection : detections) {
-
-            // Check if it is a BIOBUZZ Cluster instead of a Single Tag
             if (detection instanceof AprilTagClusterDetection) {
 
-                // Cast the detection to a Cluster so we can read its data
                 AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
 
                 if (clusterDet.metadata != null) {
 
-                    // Optional: If you only wanted RED alliance targets,
                     if (!clusterDet.metadata.name.startsWith(TEAM)) {
                         continue;
                     }
 
-                    // The SDK has already merged the tags. Return the bearing to the center of the CELL!
                     return clusterDet.ftcPose.bearing;
                 }
             }
         }
-
-        // Return null if no clusters are currently in view
         return null;
     }
 }

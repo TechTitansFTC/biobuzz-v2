@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.COLOR_SENSOR_PROXIMI
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -30,6 +31,8 @@ public class StorageSubsystem extends SubsystemBase {
 
     private final Telemetry telemetry;
 
+    private final DcMotor transferMotor;
+
     public enum GamePieceColor {
         RED, BLUE, YELLOW, NONE, UNKNOWN
     }
@@ -49,6 +52,8 @@ public class StorageSubsystem extends SubsystemBase {
         sensor5 = hardwareMap.get(DigitalChannel.class, "sensor5");
         sensor5.setMode(DigitalChannel.Mode.INPUT);
 
+        transferMotor = hardwareMap.get(DcMotor.class, "transferMotor");
+
         this.telemetry = telemetry;
     }
 
@@ -61,6 +66,9 @@ public class StorageSubsystem extends SubsystemBase {
         telemetry.addData("Color Sensor 3", getSensor3Color());
         telemetry.addData("Distance Sensor 4", getSensor4Value());
         telemetry.addData("Distance Sensor 5", getSensor5Value());
+
+        telemetry.addData("", "");
+        telemetry.addData("Transfer Motor Power", getTransferMotorPower());
     }
 
     public GamePieceColor getSensor1Color() {
@@ -86,11 +94,11 @@ public class StorageSubsystem extends SubsystemBase {
     }
 
     public boolean getSensor2Value() {
-        return sensor2.getState();
+        return !sensor2.getState();
     }
 
     public GamePieceColor getSensor3Color() {
-        double distance = ((DistanceSensor) sensor3).getDistance(DistanceUnit.CM);;
+        double distance = ((DistanceSensor) sensor3).getDistance(DistanceUnit.CM);
         if (distance >= COLOR_SENSOR_PROXIMITY || Double.isNaN(distance)) {
             return GamePieceColor.NONE;
         }
@@ -112,10 +120,18 @@ public class StorageSubsystem extends SubsystemBase {
     }
 
     public boolean getSensor4Value() {
-        return sensor4.getState();
+        return !sensor4.getState();
     }
 
     public boolean getSensor5Value() {
-        return sensor5.getState();
+        return !sensor5.getState();
+    }
+
+    public void setTransferMotorPower(double power) {
+        transferMotor.setPower(power);
+    }
+
+    public double getTransferMotorPower() {
+        return transferMotor.getPower();
     }
 }
