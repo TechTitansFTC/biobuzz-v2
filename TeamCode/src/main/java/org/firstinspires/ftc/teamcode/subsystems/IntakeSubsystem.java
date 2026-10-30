@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class IntakeSubsystem extends SubsystemBase {
     private final DcMotor intakeMotor;
     private final Telemetry telemetry;
+
     public IntakeSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 

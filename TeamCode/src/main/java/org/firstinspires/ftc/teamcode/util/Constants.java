@@ -1,8 +1,16 @@
 package org.firstinspires.ftc.teamcode.util;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 public class Constants {
+    // Drive
+    public static RevHubOrientationOnRobot.LogoFacingDirection CONTROL_HUB_LOGO_FACING_DIRECTION = RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
+    public static RevHubOrientationOnRobot.UsbFacingDirection CONTROL_HUB_USB_FACING_DIRECTION = RevHubOrientationOnRobot.UsbFacingDirection.DOWN;
+    public static String TEAM = "R";
+
     // Intake
     public static double INTAKE_MOTOR_POWER = 0.75; // Motor Power
+    public static double REVERSE_INTAKE_MOTOR_POWER = 0.3; // Magnitude
 
     // Storage
     public static double COLOR_SENSOR_PROXIMITY = 3; // Centimeters, how far the color sensor should look to see if nectar is there or not
