@@ -50,6 +50,8 @@ public class TeleOp extends OpMode {
     @Override
     public void loop () {
         CommandScheduler.getInstance().run();
+        follower.update();
+        telemetry.update();
         gamepadEx.readButtons();
     }
 

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,6 +23,8 @@ public class ScoringSubsystem extends SubsystemBase {
     private final DcMotorEx nectarTurretMotor;
     private final CRServo pollenTurretServo;
     private final CRServo nectarTurretServo;
+    private final Servo pollenGateServo;
+    private final Servo nectarGateServo;
 
     // The processor actually calculates and stores the AprilTag data
     private final AprilTagProcessor aprilTag;
@@ -36,6 +39,8 @@ public class ScoringSubsystem extends SubsystemBase {
         nectarTurretMotor = hardwareMap.get(DcMotorEx.class, "nectarTurretMotor");
         pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurretServo");
         nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurretServo");
+        pollenGateServo = hardwareMap.get(Servo.class, "pollenGateServo");
+        nectarGateServo = hardwareMap.get(Servo.class, "nectarGateServo");
 
         pollenTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         nectarTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

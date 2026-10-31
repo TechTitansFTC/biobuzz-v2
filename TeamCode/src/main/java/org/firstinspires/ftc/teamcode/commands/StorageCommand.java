@@ -18,7 +18,7 @@ public class StorageCommand extends CommandBase {
     private final IntakeSubsystem intakeSubsystem;
 
     private boolean outTaking = false;
-    private ElapsedTime outTakingTimer;
+    private final ElapsedTime outTakingTimer;
 
     public StorageCommand(StorageSubsystem storageSubsystem, IntakeSubsystem intakeSubsystem) {
         this.storageSubsystem = storageSubsystem;
@@ -49,7 +49,9 @@ public class StorageCommand extends CommandBase {
         if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED && TEAM.equals("B")) || (storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE && TEAM.equals("R"))) {
             intakeSubsystem.setMotorPower(-REVERSE_INTAKE_MOTOR_POWER);
             storageSubsystem.setTransferMotorPower(-REVERSE_TRANSFER_MOTOR_POWER);
+            outTakingTimer.reset();
             outTaking = true;
+            return;
         }
         if (storageSubsystem.getSensor2Value()) count++;
         if (storageSubsystem.getSensor3Color() != StorageSubsystem.GamePieceColor.NONE) count++;
