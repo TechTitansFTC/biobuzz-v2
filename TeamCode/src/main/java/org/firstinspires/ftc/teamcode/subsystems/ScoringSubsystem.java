@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -25,11 +26,10 @@ public class ScoringSubsystem extends SubsystemBase {
     private final CRServo nectarTurretServo;
     private final Servo pollenGateServo;
     private final Servo nectarGateServo;
-
-    // The processor actually calculates and stores the AprilTag data
+    private final AnalogInput pollenTurretEncoder;
+    private final AnalogInput nectarTurretEncoder;
     private final AprilTagProcessor aprilTag;
     private final VisionPortal pollenTurretCamera;
-
     private final Telemetry telemetry;
 
     public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -41,6 +41,8 @@ public class ScoringSubsystem extends SubsystemBase {
         nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurretServo");
         pollenGateServo = hardwareMap.get(Servo.class, "pollenGateServo");
         nectarGateServo = hardwareMap.get(Servo.class, "nectarGateServo");
+        pollenTurretEncoder = hardwareMap.get(AnalogInput.class, "pollenTurretEncoder");
+        nectarTurretEncoder = hardwareMap.get(AnalogInput.class, "nectarTurretEncoder");
 
         pollenTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         nectarTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -105,5 +107,27 @@ public class ScoringSubsystem extends SubsystemBase {
             }
         }
         return null;
+    }
+
+    public double getPollenTurretAngleDegrees() {
+        double voltage = pollenTurretEncoder.getVoltage();
+        double maxVoltage = 3.3;
+
+        return (voltage / maxVoltage) * 360.0;
+    }
+
+    public double getNectarTurretAngleDegrees() {
+        double voltage = nectarTurretEncoder.getVoltage();
+        double maxVoltage = 3.3;
+
+        return (voltage / maxVoltage) * 360.0;
+    }
+
+    public void setPollenGateServoPosition(double position) {
+        pollenGateServo.setPosition(position);
+    }
+
+    public void setNectarGateServoPosition(double position) {
+        nectarGateServo.setPosition(position);
     }
 }

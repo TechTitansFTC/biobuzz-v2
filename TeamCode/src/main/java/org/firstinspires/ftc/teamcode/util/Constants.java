@@ -27,4 +27,6 @@ public class Constants {
     public static double[] NECTAR_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005};
     public static double[] POLLEN_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005};
     public static double[] NECTAR_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005};
+    public static double POLLEN_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.06; }
+    public static double NECTAR_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.07; }
 }

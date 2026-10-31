@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
+import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_VELOCITY_MODEL;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_CONTROLLER;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_VELOCITY_MODEL;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
 import com.pedropathing.follower.Follower;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
@@ -17,7 +21,7 @@ public class ScoringCommand extends CommandBase {
     private final ScoringSubsystem scoringSubsystem;
     private final StorageSubsystem storageSubsystem;
     private final Follower follower;
-    private enum ScoringRoutine {FIND_ANGLE, ALIGN_IMU, ALIGN_LIMELIGHT, ALIGN_SECOND_TURRET, SET_MOTOR_POWER, SHOOT};
+    private enum ScoringRoutine {CALCULATE, ALIGN_IMU, ALIGN_LIMELIGHT, ALIGN_SECOND_TURRET, SET_MOTOR_POWER, SHOOT};
     private ScoringRoutine scoringState;
     private boolean endNow;
     private double angle;
@@ -25,15 +29,20 @@ public class ScoringCommand extends CommandBase {
     private final PIDController nectarTurretServoController;
     private final PIDController pollenTurretMotorController;
     private final PIDController nectarTurretMotorController;
+    private final ElapsedTime turretServoControllerTimer;
+    private final ElapsedTime turretMotorControllerTimer;
 
     public ScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, Follower follower) {
         this.scoringSubsystem = scoringSubsystem;
         this.storageSubsystem = storageSubsystem;
         this.follower = follower;
 
-        scoringState = ScoringRoutine.FIND_ANGLE;
+        scoringState = ScoringRoutine.CALCULATE;
         endNow = false;
         angle = 0;
+
+        turretServoControllerTimer = new ElapsedTime();
+        turretMotorControllerTimer = new ElapsedTime();
 
         pollenTurretServoController = new PIDController(POLLEN_TURRET_SERVO_CONTROLLER[0], POLLEN_TURRET_SERVO_CONTROLLER[1],
                 POLLEN_TURRET_SERVO_CONTROLLER[2]);
@@ -49,7 +58,7 @@ public class ScoringCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        scoringState = ScoringRoutine.FIND_ANGLE;
+        scoringState = ScoringRoutine.CALCULATE;
         endNow = false;
         angle = 0;
     }
@@ -57,7 +66,7 @@ public class ScoringCommand extends CommandBase {
     @Override
     public void execute() {
         switch (scoringState) {
-            case FIND_ANGLE:
+            case CALCULATE:
                 double currX = follower.pose().x() ;
                 double currY = follower.pose().y();
                 double currHeading = convertHeading(Math.toDegrees(follower.pose().heading()));
@@ -75,11 +84,24 @@ public class ScoringCommand extends CommandBase {
 
                 angle = Math.toDegrees(Math.atan2(xDiff, yDiff));
                 angle -= currHeading;
+
+                double lateralDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+                double pollenTurretTargetRPM = POLLEN_TURRET_VELOCITY_MODEL(lateralDistance);
+                double nectarTurretTargetRPM = NECTAR_TURRET_VELOCITY_MODEL(lateralDistance);
+
                 pollenTurretServoController.setTarget(angle);
                 nectarTurretServoController.setTarget(angle);
+                pollenTurretMotorController.setTarget(pollenTurretTargetRPM);
+                nectarTurretMotorController.setTarget(nectarTurretTargetRPM);
+
+                turretServoControllerTimer.reset();
+                turretMotorControllerTimer.reset();
+
+                scoringState = ScoringRoutine.ALIGN_IMU;
                 break;
             case ALIGN_IMU:
-                double currentValue;
+                double currentValuePollenTurretServo = scoringSubsystem.getPollenTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO;
+//                double currentValue
 
         }
     }
