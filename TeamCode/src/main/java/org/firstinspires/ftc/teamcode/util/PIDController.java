@@ -27,7 +27,7 @@ public class PIDController {
     public double calculateOutput(double currentValue, double deltaTime) {
         double error = target - currentValue;
 
-        if (deltaTime >= 0.5) deltaTime = 0.001;
+        if (deltaTime >= 0.5 || deltaTime <= 0) deltaTime = 0.001;
 
         // Proportional term
         double proportionalTerm = kp * error;

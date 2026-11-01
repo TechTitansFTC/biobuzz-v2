@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_IMU_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
@@ -21,16 +22,20 @@ public class ScoringCommand extends CommandBase {
     private final ScoringSubsystem scoringSubsystem;
     private final StorageSubsystem storageSubsystem;
     private final Follower follower;
-    private enum ScoringRoutine {CALCULATE, ALIGN_IMU, ALIGN_LIMELIGHT, ALIGN_SECOND_TURRET, SET_MOTOR_POWER, SHOOT};
+    private enum ScoringRoutine {CALCULATE, ALIGN_IMU, ALIGN_APRIL_TAGS, ALIGN_SECOND_TURRET, SET_MOTOR_POWER, SHOOT};
+    private final ElapsedTime stateTimer;
     private ScoringRoutine scoringState;
     private boolean endNow;
-    private double angle;
     private final PIDController pollenTurretServoController;
     private final PIDController nectarTurretServoController;
     private final PIDController pollenTurretMotorController;
     private final PIDController nectarTurretMotorController;
-    private final ElapsedTime turretServoControllerTimer;
-    private final ElapsedTime turretMotorControllerTimer;
+    private final ElapsedTime controllerTimer;
+
+    private double pollenTurretServoPower;
+    private double nectarTurretServoPower;
+    private double pollenTurretMotorPower;
+    private double nectarTurretMotorPower;
 
     public ScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, Follower follower) {
         this.scoringSubsystem = scoringSubsystem;
@@ -39,10 +44,14 @@ public class ScoringCommand extends CommandBase {
 
         scoringState = ScoringRoutine.CALCULATE;
         endNow = false;
-        angle = 0;
 
-        turretServoControllerTimer = new ElapsedTime();
-        turretMotorControllerTimer = new ElapsedTime();
+        controllerTimer = new ElapsedTime();
+        stateTimer = new ElapsedTime();
+
+        pollenTurretServoPower = 0;
+        nectarTurretServoPower = 0;
+        pollenTurretMotorPower = 0;
+        nectarTurretMotorPower = 0;
 
         pollenTurretServoController = new PIDController(POLLEN_TURRET_SERVO_CONTROLLER[0], POLLEN_TURRET_SERVO_CONTROLLER[1],
                 POLLEN_TURRET_SERVO_CONTROLLER[2]);
@@ -59,8 +68,8 @@ public class ScoringCommand extends CommandBase {
     @Override
     public void initialize() {
         scoringState = ScoringRoutine.CALCULATE;
+        stateTimer.reset();
         endNow = false;
-        angle = 0;
     }
 
     @Override
@@ -72,9 +81,11 @@ public class ScoringCommand extends CommandBase {
                 double currHeading = convertHeading(Math.toDegrees(follower.pose().heading()));
                 double targetY = 0;
                 double targetX = 57;
+
                 if (currY < 55) targetY = 55;
                 else if (currY > 89) targetY = 89;
-                else endNow = true;
+                else endNow = true; // Cancels command if robot is not in scoring zone
+
                 if (TEAM.equals("B")) {
                     targetX = 84;
                 }
@@ -82,7 +93,7 @@ public class ScoringCommand extends CommandBase {
                 double xDiff = targetX - currX;
                 double yDiff = targetY - currY;
 
-                angle = Math.toDegrees(Math.atan2(xDiff, yDiff));
+                double angle = Math.toDegrees(Math.atan2(xDiff, yDiff));
                 angle -= currHeading;
 
                 double lateralDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
@@ -94,15 +105,41 @@ public class ScoringCommand extends CommandBase {
                 pollenTurretMotorController.setTarget(pollenTurretTargetRPM);
                 nectarTurretMotorController.setTarget(nectarTurretTargetRPM);
 
-                turretServoControllerTimer.reset();
-                turretMotorControllerTimer.reset();
+                controllerTimer.reset();
+                stateTimer.reset();
 
                 scoringState = ScoringRoutine.ALIGN_IMU;
                 break;
             case ALIGN_IMU:
                 double currentValuePollenTurretServo = scoringSubsystem.getPollenTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO;
-//                double currentValue
+                double currentValueNectarTurretServo = scoringSubsystem.getNectarTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO; // TODO: Check if the ratio is correct
+                double currentValuePollenTurretMotor = scoringSubsystem.getPollenTurretMotorRPM();
+                double currentValueNectarTurretMotor = scoringSubsystem.getNectarTurretMotorRPM();
 
+                pollenTurretServoPower = pollenTurretServoController.calculateOutput(currentValuePollenTurretServo, controllerTimer.seconds());
+                nectarTurretServoPower = nectarTurretServoController.calculateOutput(currentValueNectarTurretServo, controllerTimer.seconds());
+                pollenTurretMotorPower = pollenTurretMotorController.calculateOutput(currentValuePollenTurretMotor, controllerTimer.seconds());
+                nectarTurretMotorPower = nectarTurretMotorController.calculateOutput(currentValueNectarTurretMotor, controllerTimer.seconds());
+
+                scoringSubsystem.setPollenTurretServoPower(pollenTurretServoPower);
+                scoringSubsystem.setNectarTurretServoPower(nectarTurretServoPower);
+                scoringSubsystem.setPollenTurretMotorPower(pollenTurretMotorPower);
+                scoringSubsystem.setNectarTurretMotorPower(nectarTurretMotorPower);
+
+                if (stateTimer.seconds() >= ALIGN_IMU_TIME) {
+                    stateTimer.reset();
+                    scoringState = ScoringRoutine.ALIGN_APRIL_TAGS;
+                }
+
+                controllerTimer.reset();
+                break;
+            case ALIGN_APRIL_TAGS:
+                pollenTurretServoController.setTarget(0);
+
+                double offsetDegrees = scoringSubsystem.getBearing();
+
+
+                break;
         }
     }
 
