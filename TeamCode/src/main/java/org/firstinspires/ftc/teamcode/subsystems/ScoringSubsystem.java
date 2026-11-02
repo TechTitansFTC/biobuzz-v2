@@ -106,7 +106,7 @@ public class ScoringSubsystem extends SubsystemBase {
                 }
             }
         }
-        return null;
+        return 0.0;
     }
 
     public double getPollenTurretAngleDegrees() {
