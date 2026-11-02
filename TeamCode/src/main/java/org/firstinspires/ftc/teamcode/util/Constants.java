@@ -23,17 +23,17 @@ public class Constants {
     // Scoring
     public static double ENCODER_TO_TURRET_RATIO = 1.16 / 3.2;
     public static double TURRET_TO_SERVO_RATIO = 1 / 1.16;
-    public static double[] POLLEN_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005}; // p, i, d
-    public static double[] NECTAR_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005};
-    public static double[] POLLEN_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005};
-    public static double[] NECTAR_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005};
+    public static double[] POLLEN_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005, 0}; // p, i, d
+    public static double[] NECTAR_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005, 0};
+    public static double[] POLLEN_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005, 0.005};
+    public static double[] NECTAR_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005, 0.005};
     public static double POLLEN_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.06; }
     public static double NECTAR_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.07; }
     public static double ALIGN_IMU_TIME = 0.6; // seconds
     public static double ALIGN_APRIL_TAG_TIME = 0.5; // seconds
-    public static double pollenGateOpenPosition = 0.6;
-    public static double pollenGateClosePosition = 0.1;
-    public static double nectarGateOpenPosition = 0.6;
-    public static double nectarGateClosePosition = 0.1;
+    public static double POLLEN_GATE_OPEN_POSITION = 0.6;
+    public static double POLLEN_GATE_CLOSE_POSITION = 0.1;
+    public static double NECTAR_GATE_OPEN_POSITION = 0.6;
+    public static double NECTAR_GATE_CLOSE_POSITION = 0.1;
     public static double shootingTime = 0.4; // seconds
 }

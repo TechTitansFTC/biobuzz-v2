@@ -11,10 +11,10 @@ import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_VELOCITY_MODEL;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
-import static org.firstinspires.ftc.teamcode.util.Constants.nectarGateClosePosition;
-import static org.firstinspires.ftc.teamcode.util.Constants.nectarGateOpenPosition;
-import static org.firstinspires.ftc.teamcode.util.Constants.pollenGateClosePosition;
-import static org.firstinspires.ftc.teamcode.util.Constants.pollenGateOpenPosition;
+import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_CLOSE_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_OPEN_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_OPEN_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.shootingTime;
 
 import com.pedropathing.follower.Follower;
@@ -63,13 +63,13 @@ public class ScoringCommand extends CommandBase {
         lateralDistance = 0;
 
         pollenTurretServoController = new PIDController(POLLEN_TURRET_SERVO_CONTROLLER[0], POLLEN_TURRET_SERVO_CONTROLLER[1],
-                POLLEN_TURRET_SERVO_CONTROLLER[2]);
+                POLLEN_TURRET_SERVO_CONTROLLER[2], POLLEN_TURRET_SERVO_CONTROLLER[3]);
         nectarTurretServoController = new PIDController(NECTAR_TURRET_SERVO_CONTROLLER[0], NECTAR_TURRET_SERVO_CONTROLLER[1],
-                NECTAR_TURRET_SERVO_CONTROLLER[2]);
+                NECTAR_TURRET_SERVO_CONTROLLER[2], NECTAR_TURRET_SERVO_CONTROLLER[3]);
         pollenTurretMotorController = new PIDController(POLLEN_TURRET_MOTOR_CONTROLLER[0], POLLEN_TURRET_MOTOR_CONTROLLER[1],
-                POLLEN_TURRET_MOTOR_CONTROLLER[2]);
+                POLLEN_TURRET_MOTOR_CONTROLLER[2], POLLEN_TURRET_MOTOR_CONTROLLER[3]);
         nectarTurretMotorController = new PIDController(NECTAR_TURRET_MOTOR_CONTROLLER[0], NECTAR_TURRET_MOTOR_CONTROLLER[1],
-                NECTAR_TURRET_MOTOR_CONTROLLER[2]);
+                NECTAR_TURRET_MOTOR_CONTROLLER[2], NECTAR_TURRET_MOTOR_CONTROLLER[3]);
 
         addRequirements(scoringSubsystem, storageSubsystem);
     }
@@ -144,8 +144,8 @@ public class ScoringCommand extends CommandBase {
 
                 if (stateTimer.seconds() >= ALIGN_APRIL_TAG_TIME) {
                     stateTimer.reset();
-                    scoringSubsystem.setPollenGateServoPosition(pollenGateOpenPosition);
-                    scoringSubsystem.setNectarGateServoPosition(nectarGateOpenPosition);
+                    scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
+                    scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
                     storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
                     scoringState = ScoringRoutine.SHOOT;
                 }
@@ -166,8 +166,8 @@ public class ScoringCommand extends CommandBase {
 
                 break;
             case END:
-                scoringSubsystem.setPollenGateServoPosition(pollenGateClosePosition);
-                scoringSubsystem.setNectarGateServoPosition(nectarGateClosePosition);
+                scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
+                scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
                 storageSubsystem.setTransferMotorPower(0);
                 break;
         }
@@ -193,8 +193,8 @@ public class ScoringCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        scoringSubsystem.setPollenGateServoPosition(pollenGateClosePosition);
-        scoringSubsystem.setNectarGateServoPosition(nectarGateClosePosition);
+        scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
+        scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
         storageSubsystem.setTransferMotorPower(0);
     }
 
