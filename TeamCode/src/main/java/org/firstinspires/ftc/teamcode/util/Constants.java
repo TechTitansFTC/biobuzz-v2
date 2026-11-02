@@ -30,4 +30,10 @@ public class Constants {
     public static double POLLEN_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.06; }
     public static double NECTAR_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * 0.07; }
     public static double ALIGN_IMU_TIME = 0.6; // seconds
+    public static double ALIGN_APRIL_TAG_TIME = 0.5; // seconds
+    public static double pollenGateOpenPosition = 0.6;
+    public static double pollenGateClosePosition = 0.1;
+    public static double nectarGateOpenPosition = 0.6;
+    public static double nectarGateClosePosition = 0.1;
+    public static double shootingTime = 0.4; // seconds
 }

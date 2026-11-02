@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_APRIL_TAG_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_IMU_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
@@ -9,6 +10,12 @@ import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_MOTOR_
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_VELOCITY_MODEL;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
+import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
+import static org.firstinspires.ftc.teamcode.util.Constants.nectarGateClosePosition;
+import static org.firstinspires.ftc.teamcode.util.Constants.nectarGateOpenPosition;
+import static org.firstinspires.ftc.teamcode.util.Constants.pollenGateClosePosition;
+import static org.firstinspires.ftc.teamcode.util.Constants.pollenGateOpenPosition;
+import static org.firstinspires.ftc.teamcode.util.Constants.shootingTime;
 
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,7 +29,7 @@ public class ScoringCommand extends CommandBase {
     private final ScoringSubsystem scoringSubsystem;
     private final StorageSubsystem storageSubsystem;
     private final Follower follower;
-    private enum ScoringRoutine {CALCULATE, ALIGN_IMU, ALIGN_APRIL_TAGS, ALIGN_SECOND_TURRET, SET_MOTOR_POWER, SHOOT};
+    private enum ScoringRoutine {CALCULATE, ALIGN_IMU, ALIGN_APRIL_TAGS, SHOOT, END};
     private final ElapsedTime stateTimer;
     private ScoringRoutine scoringState;
     private boolean endNow;
@@ -36,6 +43,7 @@ public class ScoringCommand extends CommandBase {
     private double nectarTurretServoPower;
     private double pollenTurretMotorPower;
     private double nectarTurretMotorPower;
+    private double lateralDistance;
 
     public ScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, Follower follower) {
         this.scoringSubsystem = scoringSubsystem;
@@ -52,6 +60,7 @@ public class ScoringCommand extends CommandBase {
         nectarTurretServoPower = 0;
         pollenTurretMotorPower = 0;
         nectarTurretMotorPower = 0;
+        lateralDistance = 0;
 
         pollenTurretServoController = new PIDController(POLLEN_TURRET_SERVO_CONTROLLER[0], POLLEN_TURRET_SERVO_CONTROLLER[1],
                 POLLEN_TURRET_SERVO_CONTROLLER[2]);
@@ -96,7 +105,7 @@ public class ScoringCommand extends CommandBase {
                 double angle = Math.toDegrees(Math.atan2(xDiff, yDiff));
                 angle -= currHeading;
 
-                double lateralDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+                lateralDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
                 double pollenTurretTargetRPM = POLLEN_TURRET_VELOCITY_MODEL(lateralDistance);
                 double nectarTurretTargetRPM = NECTAR_TURRET_VELOCITY_MODEL(lateralDistance);
 
@@ -113,20 +122,13 @@ public class ScoringCommand extends CommandBase {
             case ALIGN_IMU:
                 double currentValuePollenTurretServo = scoringSubsystem.getPollenTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO;
                 double currentValueNectarTurretServo = scoringSubsystem.getNectarTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO; // TODO: Check if the ratio is correct
-                double currentValuePollenTurretMotor = scoringSubsystem.getPollenTurretMotorRPM();
-                double currentValueNectarTurretMotor = scoringSubsystem.getNectarTurretMotorRPM();
 
                 pollenTurretServoPower = pollenTurretServoController.calculateOutput(currentValuePollenTurretServo, controllerTimer.seconds());
                 nectarTurretServoPower = nectarTurretServoController.calculateOutput(currentValueNectarTurretServo, controllerTimer.seconds());
-                pollenTurretMotorPower = pollenTurretMotorController.calculateOutput(currentValuePollenTurretMotor, controllerTimer.seconds());
-                nectarTurretMotorPower = nectarTurretMotorController.calculateOutput(currentValueNectarTurretMotor, controllerTimer.seconds());
-
-                scoringSubsystem.setPollenTurretServoPower(pollenTurretServoPower);
-                scoringSubsystem.setNectarTurretServoPower(nectarTurretServoPower);
-                scoringSubsystem.setPollenTurretMotorPower(pollenTurretMotorPower);
-                scoringSubsystem.setNectarTurretMotorPower(nectarTurretMotorPower);
 
                 if (stateTimer.seconds() >= ALIGN_IMU_TIME) {
+                    pollenTurretServoController.setTarget(0);
+                    nectarTurretServoController.setTarget(0);
                     stateTimer.reset();
                     scoringState = ScoringRoutine.ALIGN_APRIL_TAGS;
                 }
@@ -134,18 +136,66 @@ public class ScoringCommand extends CommandBase {
                 controllerTimer.reset();
                 break;
             case ALIGN_APRIL_TAGS:
-                pollenTurretServoController.setTarget(0);
+                double offsetDegreesPollen = scoringSubsystem.getBearing();
+                double offsetDegreesNectar = getSecondTurretBearing(lateralDistance, 5.669, offsetDegreesPollen);
 
-                double offsetDegrees = scoringSubsystem.getBearing();
+                pollenTurretServoPower = pollenTurretServoController.calculateOutput(offsetDegreesPollen, controllerTimer.seconds());
+                nectarTurretServoPower = nectarTurretServoController.calculateOutput(offsetDegreesNectar, controllerTimer.seconds());
 
+                if (stateTimer.seconds() >= ALIGN_APRIL_TAG_TIME) {
+                    stateTimer.reset();
+                    scoringSubsystem.setPollenGateServoPosition(pollenGateOpenPosition);
+                    scoringSubsystem.setNectarGateServoPosition(nectarGateOpenPosition);
+                    storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
+                    scoringState = ScoringRoutine.SHOOT;
+                }
+
+                controllerTimer.reset();
+                break;
+            case SHOOT:
+                double offsetDegreesPollen2 = scoringSubsystem.getBearing();
+                double offsetDegreesNectar2 = getSecondTurretBearing(lateralDistance, 5.669, offsetDegreesPollen2);
+
+                pollenTurretServoPower = pollenTurretServoController.calculateOutput(offsetDegreesPollen2, controllerTimer.seconds());
+                nectarTurretServoPower = nectarTurretServoController.calculateOutput(offsetDegreesNectar2, controllerTimer.seconds());
+
+                if (stateTimer.seconds() >= shootingTime) {
+                    scoringState = ScoringRoutine.END;
+                    stateTimer.reset();
+                }
 
                 break;
+            case END:
+                scoringSubsystem.setPollenGateServoPosition(pollenGateClosePosition);
+                scoringSubsystem.setNectarGateServoPosition(nectarGateClosePosition);
+                storageSubsystem.setTransferMotorPower(0);
+                break;
         }
+
+        double currentValuePollenTurretMotor = scoringSubsystem.getPollenTurretMotorRPM();
+        double currentValueNectarTurretMotor = scoringSubsystem.getNectarTurretMotorRPM();
+
+
+        pollenTurretMotorPower = pollenTurretMotorController.calculateOutput(currentValuePollenTurretMotor, controllerTimer.seconds());
+        nectarTurretMotorPower = nectarTurretMotorController.calculateOutput(currentValueNectarTurretMotor, controllerTimer.seconds());
+
+        scoringSubsystem.setPollenTurretServoPower(pollenTurretServoPower);
+        scoringSubsystem.setNectarTurretServoPower(nectarTurretServoPower);
+        scoringSubsystem.setPollenTurretMotorPower(pollenTurretMotorPower);
+        scoringSubsystem.setNectarTurretMotorPower(nectarTurretMotorPower);
+
     }
 
     @Override
     public boolean isFinished() {
-        return endNow;
+        return endNow || scoringState == ScoringRoutine.END;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        scoringSubsystem.setPollenGateServoPosition(pollenGateClosePosition);
+        scoringSubsystem.setNectarGateServoPosition(nectarGateClosePosition);
+        storageSubsystem.setTransferMotorPower(0);
     }
 
     public double convertHeading(double beforeDegrees) {
@@ -159,5 +209,20 @@ public class ScoringCommand extends CommandBase {
         }
 
         return after;
+    }
+
+    public double getSecondTurretBearing(double x, double y, double thetaDegrees) {
+        // Convert the first turret's bearing to radians for Java Math functions
+        double theta = Math.toRadians(thetaDegrees);
+
+        // Calculate the components from the offset formula
+        double xComponent = x * Math.sin(theta);
+        double yComponent = y - (x * Math.cos(theta));
+
+        // Use atan2 with (X, Y) to match your custom 0=forward coordinate system
+        double alpha = Math.atan2(xComponent, yComponent);
+
+        // Convert the result back to degrees
+        return Math.toDegrees(alpha);
     }
 }

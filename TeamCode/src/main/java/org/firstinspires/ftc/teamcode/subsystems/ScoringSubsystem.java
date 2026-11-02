@@ -111,16 +111,30 @@ public class ScoringSubsystem extends SubsystemBase {
 
     public double getPollenTurretAngleDegrees() {
         double voltage = pollenTurretEncoder.getVoltage();
-        double maxVoltage = 3.3;
+        double rawDegrees = (voltage / 3.3) * 360.0;
 
-        return (voltage / maxVoltage) * 360.0;
+        // Force the wrap-around to become negative degrees
+        // Turning backwards past 0 (e.g., 350 degrees) becomes -10 degrees
+        if (rawDegrees > 180.0) {
+            rawDegrees -= 360.0;
+        }
+
+        return rawDegrees;
     }
 
     public double getNectarTurretAngleDegrees() {
         double voltage = nectarTurretEncoder.getVoltage();
         double maxVoltage = 3.3;
 
-        return (voltage / maxVoltage) * 360.0;
+        double rawDegrees = (voltage / 3.3) * 360.0;
+
+        // Force the wrap-around to become negative degrees
+        // Turning backwards past 0 (e.g., 350 degrees) becomes -10 degrees
+        if (rawDegrees > 180.0) {
+            rawDegrees -= 360.0;
+        }
+
+        return rawDegrees;
     }
 
     public void setPollenGateServoPosition(double position) {
