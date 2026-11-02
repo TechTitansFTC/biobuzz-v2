@@ -5,7 +5,6 @@ import static org.firstinspires.ftc.teamcode.util.Constants.CONTROL_HUB_USB_FACI
 import static org.firstinspires.ftc.teamcode.util.PoseStorage.autonomousEndPose;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -14,12 +13,22 @@ import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.ScoringCommand;
+import org.firstinspires.ftc.teamcode.commands.StorageCommand;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp Main")
 public class TeleOp extends OpMode {
     MecanumDriveSubsystem mecanumDriveSubsystem;
+    IntakeSubsystem intakeSubsystem;
+    ScoringSubsystem scoringSubsystem;
+    StorageSubsystem storageSubsystem;
     DriveCommand driveCommand;
+    ScoringCommand scoringCommand;
+    StorageCommand storageCommand;
     IMU imu;
     GamepadEx gamepadEx;
     Follower follower;
@@ -31,20 +40,28 @@ public class TeleOp extends OpMode {
 
         gamepadEx = new GamepadEx(gamepad1);
         follower = org.firstinspires.ftc.teamcode.pedro.Constants.create(hardwareMap);
-
-        // Optional: Set starting pose if continuing from Autonomous
         follower.setPose(autonomousEndPose);
 
         // Subsystems
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,imu,telemetry);
+        intakeSubsystem = new IntakeSubsystem(hardwareMap, telemetry);
+        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
+        storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
+        scoringCommand = new ScoringCommand(scoringSubsystem, storageSubsystem, follower);
+        storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
 
         // Bindings
         mecanumDriveSubsystem.setDefaultCommand(driveCommand);
+        storageSubsystem.setDefaultCommand(storageCommand);
+        intakeSubsystem.setDefaultCommand(storageCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(() -> mecanumDriveSubsystem.resetIMU());
+        gamepadEx.getGamepadButton(GamepadKeys.Button.X)
+                .whenPressed(scoringCommand);
+
     }
 
     @Override
