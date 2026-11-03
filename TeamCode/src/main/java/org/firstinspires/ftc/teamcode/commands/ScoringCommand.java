@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_APRIL_TAG_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_IMU_TIME;
-import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_VELOCITY_MODEL;
@@ -15,7 +14,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_CLOSE_PO
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_OPEN_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_OPEN_POSITION;
-import static org.firstinspires.ftc.teamcode.util.Constants.shootingTime;
+import static org.firstinspires.ftc.teamcode.util.Constants.SHOOTING_TIME;
 
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -162,7 +161,7 @@ public class ScoringCommand extends CommandBase {
                 pollenTurretServoPower = pollenTurretServoController.calculateOutput(offsetDegreesPollen2, controllerTimer.seconds());
                 nectarTurretServoPower = nectarTurretServoController.calculateOutput(offsetDegreesNectar2, controllerTimer.seconds());
 
-                if (stateTimer.seconds() >= shootingTime) {
+                if (stateTimer.seconds() >= SHOOTING_TIME) {
                     scoringState = ScoringRoutine.END;
                     stateTimer.reset();
                 }

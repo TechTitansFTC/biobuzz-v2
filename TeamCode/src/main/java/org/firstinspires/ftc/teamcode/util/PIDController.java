@@ -26,6 +26,17 @@ public class PIDController {
         this.previousError = 0.0;
     }
 
+    public void setConstants(double kp, double ki, double kd, double kf) {
+        this.kp = kp;
+        this.ki = ki;
+        this.kd = kd;
+        this.kf = kf;
+    }
+
+    public double getTarget() {
+        return target;
+    }
+
     public double calculateOutput(double currentValue, double deltaTime) {
         double error = target - currentValue;
 
