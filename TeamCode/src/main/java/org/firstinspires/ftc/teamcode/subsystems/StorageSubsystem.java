@@ -55,6 +55,8 @@ public class StorageSubsystem extends SubsystemBase {
         transferMotor = hardwareMap.get(DcMotor.class, "transferMotor");
 
         this.telemetry = telemetry;
+
+        register();
     }
 
     @Override

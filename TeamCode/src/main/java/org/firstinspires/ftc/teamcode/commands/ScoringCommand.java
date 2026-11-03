@@ -93,7 +93,10 @@ public class ScoringCommand extends CommandBase {
 
                 if (currY < 55) targetY = 55;
                 else if (currY > 89) targetY = 89;
-                else endNow = true; // Cancels command if robot is not in scoring zone
+                else  {
+                    endNow = true; // Cancels command if robot is not in scoring zone
+                    return;
+                }
 
                 if (TEAM.equals("B")) {
                     targetX = 84;
@@ -103,7 +106,7 @@ public class ScoringCommand extends CommandBase {
                 double yDiff = targetY - currY;
 
                 double angle = Math.toDegrees(Math.atan2(xDiff, yDiff));
-                angle -= currHeading;
+                angle = normalizeDegrees(angle - currHeading);
 
                 lateralDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
                 double pollenTurretTargetRPM = POLLEN_TURRET_VELOCITY_MODEL(lateralDistance);
@@ -120,24 +123,24 @@ public class ScoringCommand extends CommandBase {
                 scoringState = ScoringRoutine.ALIGN_IMU;
                 break;
             case ALIGN_IMU:
-                double currentValuePollenTurretServo = scoringSubsystem.getPollenTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO;
-                double currentValueNectarTurretServo = scoringSubsystem.getNectarTurretAngleDegrees() * ENCODER_TO_TURRET_RATIO; // TODO: Check if the ratio is correct
+                double currentValuePollenTurretServo = scoringSubsystem.getPollenTurretAngleDegrees();
+                double currentValueNectarTurretServo = scoringSubsystem.getNectarTurretAngleDegrees(); // TODO: Check if the ratio is correct
 
                 pollenTurretServoPower = pollenTurretServoController.calculateOutput(currentValuePollenTurretServo, controllerTimer.seconds());
                 nectarTurretServoPower = nectarTurretServoController.calculateOutput(currentValueNectarTurretServo, controllerTimer.seconds());
 
                 if (stateTimer.seconds() >= ALIGN_IMU_TIME) {
                     pollenTurretServoController.setTarget(0);
-                    nectarTurretServoController.setTarget(0);
+                    nectarTurretServoController.setTarget(getSecondTurretBearing(lateralDistance, 5.669, scoringSubsystem.getBearing()));
                     stateTimer.reset();
                     scoringState = ScoringRoutine.ALIGN_APRIL_TAGS;
                 }
 
-                controllerTimer.reset();
+
                 break;
             case ALIGN_APRIL_TAGS:
                 double offsetDegreesPollen = scoringSubsystem.getBearing();
-                double offsetDegreesNectar = getSecondTurretBearing(lateralDistance, 5.669, offsetDegreesPollen);
+                double offsetDegreesNectar = scoringSubsystem.getPollenTurretAngleDegrees();
 
                 pollenTurretServoPower = pollenTurretServoController.calculateOutput(offsetDegreesPollen, controllerTimer.seconds());
                 nectarTurretServoPower = nectarTurretServoController.calculateOutput(offsetDegreesNectar, controllerTimer.seconds());
@@ -150,7 +153,7 @@ public class ScoringCommand extends CommandBase {
                     scoringState = ScoringRoutine.SHOOT;
                 }
 
-                controllerTimer.reset();
+
                 break;
             case SHOOT:
                 double offsetDegreesPollen2 = scoringSubsystem.getBearing();
@@ -183,7 +186,7 @@ public class ScoringCommand extends CommandBase {
         scoringSubsystem.setNectarTurretServoPower(nectarTurretServoPower);
         scoringSubsystem.setPollenTurretMotorPower(pollenTurretMotorPower);
         scoringSubsystem.setNectarTurretMotorPower(nectarTurretMotorPower);
-
+        controllerTimer.reset();
     }
 
     @Override
@@ -196,6 +199,8 @@ public class ScoringCommand extends CommandBase {
         scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
         scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
         storageSubsystem.setTransferMotorPower(0);
+        scoringSubsystem.setPollenTurretServoPower(0);
+        scoringSubsystem.setNectarTurretServoPower(0);
     }
 
     public double convertHeading(double beforeDegrees) {
@@ -224,5 +229,15 @@ public class ScoringCommand extends CommandBase {
 
         // Convert the result back to degrees
         return Math.toDegrees(alpha);
+    }
+
+    public double normalizeDegrees(double degrees) {
+        while (degrees > 180.0) {
+            degrees -= 360.0;
+        }
+        while (degrees <= -180.0) {
+            degrees += 360.0;
+        }
+        return degrees;
     }
 }

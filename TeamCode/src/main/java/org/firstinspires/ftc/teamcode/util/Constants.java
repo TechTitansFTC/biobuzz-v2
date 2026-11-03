@@ -21,8 +21,8 @@ public class Constants {
     public static double REVERSE_TRANSFER_MOTOR_POWER = 0.3; // Motor power magnitude
 
     // Scoring
-    public static double ENCODER_TO_TURRET_RATIO = 1.16 / 3.2;
-    public static double TURRET_TO_SERVO_RATIO = 1 / 1.16;
+        public static double ENCODER_TO_TURRET_RATIO = 1 / 1.16;
+//    public static double TURRET_TO_SERVO_RATIO = 1 / 1.16;
     public static double[] POLLEN_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005, 0}; // p, i, d
     public static double[] NECTAR_TURRET_SERVO_CONTROLLER = new double[]{0.06, 0.0001, 0.005, 0};
     public static double[] POLLEN_TURRET_MOTOR_CONTROLLER = new double[]{0.5, 0.0001, 0.005, 0.005};

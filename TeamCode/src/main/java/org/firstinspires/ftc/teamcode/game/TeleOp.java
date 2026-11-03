@@ -56,7 +56,6 @@ public class TeleOp extends OpMode {
         // Bindings
         mecanumDriveSubsystem.setDefaultCommand(driveCommand);
         storageSubsystem.setDefaultCommand(storageCommand);
-        intakeSubsystem.setDefaultCommand(storageCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(() -> mecanumDriveSubsystem.resetIMU());
         gamepadEx.getGamepadButton(GamepadKeys.Button.X)

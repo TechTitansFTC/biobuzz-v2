@@ -14,6 +14,8 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         this.telemetry = telemetry;
+
+        register();
     }
 
     @Override
