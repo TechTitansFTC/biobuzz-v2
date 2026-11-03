@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -53,6 +54,8 @@ public class ScoringSubsystem extends SubsystemBase {
                 .setCamera(hardwareMap.get(WebcamName.class, "pollenTurretCamera"))
                 .addProcessor(aprilTag)
                 .build();
+
+        register();
     }
 
     @Override
@@ -119,7 +122,7 @@ public class ScoringSubsystem extends SubsystemBase {
             rawDegrees -= 360.0;
         }
 
-        return rawDegrees;
+        return rawDegrees * ENCODER_TO_TURRET_RATIO;
     }
 
     public double getNectarTurretAngleDegrees() {
@@ -134,7 +137,7 @@ public class ScoringSubsystem extends SubsystemBase {
             rawDegrees -= 360.0;
         }
 
-        return rawDegrees;
+        return rawDegrees * ENCODER_TO_TURRET_RATIO;
     }
 
     public void setPollenGateServoPosition(double position) {
