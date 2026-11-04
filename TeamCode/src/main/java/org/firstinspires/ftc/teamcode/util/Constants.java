@@ -14,6 +14,10 @@ public class Constants {
     public static double INTAKE_MOTOR_POWER = 0.75;
     public static double REVERSE_INTAKE_MOTOR_POWER = 0.3;
     public static double OUT_TAKE_TIME = 0.35;
+    public static double FLOWER_RIGHT_SERVO_DOWN = 0.8;
+    public static double FLOWER_RIGHT_SERVO_UP = 0.2;
+    public static double FLOWER_LEFT_SERVO_DOWN = 0.8;
+    public static double FLOWER_LEFT_SERVO_UP = 0.2;
 
     // Storage
     public static double COLOR_SENSOR_PROXIMITY = 3.0;

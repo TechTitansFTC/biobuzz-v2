@@ -13,8 +13,10 @@ import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.FlowerIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.ScoringCommand;
 import org.firstinspires.ftc.teamcode.commands.StorageCommand;
+import org.firstinspires.ftc.teamcode.subsystems.FlowerSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
@@ -26,9 +28,11 @@ public class TeleOp extends OpMode {
     IntakeSubsystem intakeSubsystem;
     ScoringSubsystem scoringSubsystem;
     StorageSubsystem storageSubsystem;
+    FlowerSubsystem flowerSubsystem;
     DriveCommand driveCommand;
     ScoringCommand scoringCommand;
     StorageCommand storageCommand;
+    FlowerIntakeCommand flowerIntakeCommand;
     IMU imu;
     GamepadEx gamepadEx;
     Follower follower;
@@ -47,11 +51,13 @@ public class TeleOp extends OpMode {
         intakeSubsystem = new IntakeSubsystem(hardwareMap, telemetry);
         scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
+        flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
         scoringCommand = new ScoringCommand(scoringSubsystem, storageSubsystem, follower);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
+        flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
 
         // Bindings
         mecanumDriveSubsystem.setDefaultCommand(driveCommand);
@@ -60,7 +66,8 @@ public class TeleOp extends OpMode {
                 .whenPressed(() -> mecanumDriveSubsystem.resetIMU());
         gamepadEx.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(scoringCommand);
-
+        gamepadEx.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenHeld(flowerIntakeCommand);
     }
 
     @Override
