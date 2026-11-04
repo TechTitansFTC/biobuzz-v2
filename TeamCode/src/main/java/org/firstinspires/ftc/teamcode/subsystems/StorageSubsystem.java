@@ -39,20 +39,20 @@ public class StorageSubsystem extends SubsystemBase {
     private final float[] hsvValues = new float[3];
 
     public StorageSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
-        sensor1 = hardwareMap.get(NormalizedColorSensor.class, "sensor1");
+        sensor1 = hardwareMap.get(NormalizedColorSensor.class, "sensor1"); // port 0 i2c expansion hub
 
-        sensor2 = hardwareMap.get(DigitalChannel.class, "sensor2");
+        sensor2 = hardwareMap.get(DigitalChannel.class, "sensor2"); // port 0 digital expansion hub
         sensor2.setMode(DigitalChannel.Mode.INPUT);
 
-        sensor3 = hardwareMap.get(NormalizedColorSensor.class, "sensor3");
+        sensor3 = hardwareMap.get(NormalizedColorSensor.class, "sensor3"); // port 1 i2c expansion hub
 
-        sensor4 = hardwareMap.get(DigitalChannel.class, "sensor4");
+        sensor4 = hardwareMap.get(DigitalChannel.class, "sensor4"); // port 2 digital expansion hub
         sensor4.setMode(DigitalChannel.Mode.INPUT);
 
-        sensor5 = hardwareMap.get(DigitalChannel.class, "sensor5");
+        sensor5 = hardwareMap.get(DigitalChannel.class, "sensor5"); // port 4 digital expansion hub
         sensor5.setMode(DigitalChannel.Mode.INPUT);
 
-        transferMotor = hardwareMap.get(DcMotor.class, "transferMotor");
+        transferMotor = hardwareMap.get(DcMotor.class, "transfer"); // port 2 motor control hub
 
         this.telemetry = telemetry;
 

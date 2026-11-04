@@ -36,14 +36,14 @@ public class ScoringSubsystem extends SubsystemBase {
     public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        pollenTurretMotor = hardwareMap.get(DcMotorEx.class, "pollenTurretMotor");
-        nectarTurretMotor = hardwareMap.get(DcMotorEx.class, "nectarTurretMotor");
-        pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurretServo");
-        nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurretServo");
-        pollenGateServo = hardwareMap.get(Servo.class, "pollenGateServo");
-        nectarGateServo = hardwareMap.get(Servo.class, "nectarGateServo");
-        pollenTurretEncoder = hardwareMap.get(AnalogInput.class, "pollenTurretEncoder");
-        nectarTurretEncoder = hardwareMap.get(AnalogInput.class, "nectarTurretEncoder");
+        pollenTurretMotor = hardwareMap.get(DcMotorEx.class, "pollenShooter"); // port 3 motor control hub
+        nectarTurretMotor = hardwareMap.get(DcMotorEx.class, "nectarShooter"); // port 0 motor expansion hub (encoder)
+        pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurret"); // port 5 servo expansion hub
+        nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurret"); // port 5 servo control hub
+        pollenGateServo = hardwareMap.get(Servo.class, "pollenGate"); // port 0 servo expansion hub
+        nectarGateServo = hardwareMap.get(Servo.class, "nectarGate"); // port 0 servo control hub
+        pollenTurretEncoder = hardwareMap.get(AnalogInput.class, "pollenEncoder"); // 0 analog control hub
+        nectarTurretEncoder = hardwareMap.get(AnalogInput.class, "nectarEncoder"); // 0 analog expansion hub
 
         pollenTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         nectarTurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
