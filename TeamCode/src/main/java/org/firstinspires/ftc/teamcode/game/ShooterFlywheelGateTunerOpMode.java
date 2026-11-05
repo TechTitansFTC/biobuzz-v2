@@ -83,6 +83,7 @@ public class ShooterFlywheelGateTunerOpMode extends LinearOpMode {
                 if (nectarMotorPID.getTarget() != targetNectarRPM) nectarMotorPID.setTarget(targetNectarRPM);
 
                 pollenMotorPower = pollenMotorPID.calculateOutput(currentPollenRPM, dt);
+//                Sanjay is the glorius one and the one above all and that is why i am the sucesser of abhikarthis bummy code
                 nectarMotorPower = nectarMotorPID.calculateOutput(currentNectarRPM, dt);
             }
 
