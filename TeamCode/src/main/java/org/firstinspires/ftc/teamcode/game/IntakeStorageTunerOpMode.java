@@ -12,6 +12,7 @@ import com.seattlesolvers.solverslib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.commands.StorageCommand;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
 @Configurable
 @TeleOp(name = "1. Intake & Storage Tuner", group = "Tuners")
@@ -48,29 +49,26 @@ public class IntakeStorageTunerOpMode extends LinearOpMode {
             } else {
                 // Manual Controls: Right Bumper = Intake, Left Bumper = Reverse/Outtake, Triggers = Transfer
                 if (gamepad1.right_bumper) {
-                    intakeSubsystem.setMotorPower(INTAKE_MOTOR_POWER);
+                    intakeSubsystem.setMotorPower(Constants.INTAKE_MOTOR_POWER);
                 } else if (gamepad1.left_bumper) {
-                    intakeSubsystem.setMotorPower(-REVERSE_INTAKE_MOTOR_POWER);
+                    intakeSubsystem.setMotorPower(-Constants.REVERSE_INTAKE_MOTOR_POWER);
                 } else {
                     intakeSubsystem.setMotorPower(0);
                 }
 
                 if (gamepad1.right_trigger > 0.1) {
-                    storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
+                    storageSubsystem.setTransferMotorPower(Constants.TRANSFER_MOTOR_POWER);
                 } else if (gamepad1.left_trigger > 0.1) {
-                    storageSubsystem.setTransferMotorPower(-REVERSE_TRANSFER_MOTOR_POWER);
+                    storageSubsystem.setTransferMotorPower(-Constants.REVERSE_TRANSFER_MOTOR_POWER);
                 } else {
                     storageSubsystem.setTransferMotorPower(0);
                 }
             }
 
-            // Run subsystem periodic() methods
-            intakeSubsystem.periodic();
-            storageSubsystem.periodic();
-
             // Panels Graph & Telemetry
             panelsTelemetry.addData("Mode (Press X to toggle)", RUN_AUTO_STORAGE_LOGIC ? "AUTO STORAGE COMMAND" : "MANUAL OVERRIDE");
             panelsTelemetry.addData("Sensor 1 Color", storageSubsystem.getSensor1Color());
+            panelsTelemetry.addData("Sensor 1 Hue", storageSubsystem.getSensor1Hue());
             panelsTelemetry.addData("Sensor 2 Dist Triggered", storageSubsystem.getSensor2Value());
             panelsTelemetry.addData("Sensor 3 Color", storageSubsystem.getSensor3Color());
             panelsTelemetry.addData("Sensor 4 Dist Triggered", storageSubsystem.getSensor4Value());

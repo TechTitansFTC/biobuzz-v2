@@ -11,8 +11,8 @@ public class Constants {
     public static String TEAM = "R";
 
     // Intake
-    public static double INTAKE_MOTOR_POWER = 0.75;
-    public static double REVERSE_INTAKE_MOTOR_POWER = 0.3;
+    public static double INTAKE_MOTOR_POWER = 1;
+    public static double REVERSE_INTAKE_MOTOR_POWER = 0.5;
     public static double OUT_TAKE_TIME = 0.35;
     public static double FLOWER_RIGHT_SERVO_DOWN = 0.8;
     public static double FLOWER_RIGHT_SERVO_UP = 0.2;
@@ -20,11 +20,11 @@ public class Constants {
     public static double FLOWER_LEFT_SERVO_UP = 0.2;
 
     // Storage
-    public static double COLOR_SENSOR_PROXIMITY = 3.0;
+    public static double COLOR_SENSOR_PROXIMITY = 7.0;
     public static double COLOR_SENSOR_COLOR_THRESHOLD = 20.0;
     public static double DISTANCE_SENSOR_THRESHOLD = 3.0;
-    public static double TRANSFER_MOTOR_POWER = 0.63;
-    public static double REVERSE_TRANSFER_MOTOR_POWER = 0.3;
+    public static double TRANSFER_MOTOR_POWER = 1;
+    public static double REVERSE_TRANSFER_MOTOR_POWER = 0.5;
 
     // Scoring General
     public static double ENCODER_TO_TURRET_RATIO = 1.0 / 1.16;

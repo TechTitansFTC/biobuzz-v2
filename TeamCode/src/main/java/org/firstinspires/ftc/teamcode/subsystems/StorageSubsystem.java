@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.COLOR_SENSOR_PROXIMI
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -53,6 +54,7 @@ public class StorageSubsystem extends SubsystemBase {
         sensor5.setMode(DigitalChannel.Mode.INPUT);
 
         transferMotor = hardwareMap.get(DcMotor.class, "transfer"); // port 2 motor control hub
+        transferMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.telemetry = telemetry;
 
@@ -64,6 +66,8 @@ public class StorageSubsystem extends SubsystemBase {
         telemetry.addData("--- Distance/Color Sensors ---", "");
 
         telemetry.addData("Color Sensor 1", getSensor1Color());
+        telemetry.addData("Color sensor 1 hue", getSensor1Hue());
+        telemetry.addData("", "");
         telemetry.addData("Distance Sensor 2", getSensor2Value());
         telemetry.addData("Color Sensor 3", getSensor3Color());
         telemetry.addData("Distance Sensor 4", getSensor4Value());
@@ -84,19 +88,35 @@ public class StorageSubsystem extends SubsystemBase {
         Color.colorToHSV(colors.toColor(), hsvValues);
         float hue = hsvValues[0];
 
-        if (hue > 30 && hue < 90) {
+        if (hue > 40 && hue < 150) {
             return GamePieceColor.YELLOW;
         } else if (hue > 200 && hue < 270) {
             return GamePieceColor.BLUE;
-        } else if (hue < 20 || hue > 340) {
+        } else if (hue < 40 || hue > 300) {
             return GamePieceColor.RED;
         }
 
         return GamePieceColor.UNKNOWN;
     }
 
+    public float getSensor1Hue() {
+        double distance = ((DistanceSensor) sensor1).getDistance(DistanceUnit.CM);;
+        if (distance >= COLOR_SENSOR_PROXIMITY || Double.isNaN(distance)) {
+            return -1;
+        }
+
+        NormalizedRGBA colors = sensor1.getNormalizedColors();
+
+        Color.colorToHSV(colors.toColor(), hsvValues);
+        float hue = hsvValues[0];
+
+        return hue;
+
+//        return GamePieceColor.UNKNOWN;
+    }
+
     public boolean getSensor2Value() {
-        return !sensor2.getState();
+        return sensor2.getState();
     }
 
     public GamePieceColor getSensor3Color() {
@@ -110,11 +130,11 @@ public class StorageSubsystem extends SubsystemBase {
         Color.colorToHSV(colors.toColor(), hsvValues);
         float hue = hsvValues[0];
 
-        if (hue > 30 && hue < 90) {
+        if (hue > 40 && hue < 150) {
             return GamePieceColor.YELLOW;
         } else if (hue > 200 && hue < 270) {
             return GamePieceColor.BLUE;
-        } else if (hue < 20 || hue > 340) {
+        } else if (hue < 40 || hue > 300) {
             return GamePieceColor.RED;
         }
 
@@ -122,11 +142,11 @@ public class StorageSubsystem extends SubsystemBase {
     }
 
     public boolean getSensor4Value() {
-        return !sensor4.getState();
+        return sensor4.getState();
     }
 
     public boolean getSensor5Value() {
-        return !sensor5.getState();
+        return sensor5.getState();
     }
 
     public void setTransferMotorPower(double power) {

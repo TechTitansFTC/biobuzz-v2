@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
+import android.util.Size;
+
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -52,6 +54,7 @@ public class ScoringSubsystem extends SubsystemBase {
 
         pollenTurretCamera = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "pollenTurretCamera"))
+                .setCameraResolution(Size.parseSize("640x400"))
                 .addProcessor(aprilTag)
                 .build();
 
