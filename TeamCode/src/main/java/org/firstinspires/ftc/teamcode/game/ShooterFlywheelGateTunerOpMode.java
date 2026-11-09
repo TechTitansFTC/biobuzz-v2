@@ -56,12 +56,12 @@ public class ShooterFlywheelGateTunerOpMode extends LinearOpMode {
 
             // Hold Gamepad1 B to open gates and run transfer motor (Simulate SHOOT state)
             if (gamepad1.b) {
-                scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
-                scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
+                storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
+                storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
                 storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
             } else {
-                scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
-                scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
+                storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
+                storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
                 storageSubsystem.setTransferMotorPower(0);
             }
 

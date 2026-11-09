@@ -69,12 +69,15 @@ public class IntakeStorageTunerOpMode extends LinearOpMode {
             panelsTelemetry.addData("Mode (Press X to toggle)", RUN_AUTO_STORAGE_LOGIC ? "AUTO STORAGE COMMAND" : "MANUAL OVERRIDE");
             panelsTelemetry.addData("Sensor 1 Color", storageSubsystem.getSensor1Color());
             panelsTelemetry.addData("Sensor 1 Hue", storageSubsystem.getSensor1Hue());
+            panelsTelemetry.addData("Sensor 1 Distance", storageSubsystem.getSensor1Distance());
             panelsTelemetry.addData("Sensor 2 Dist Triggered", storageSubsystem.getSensor2Value());
             panelsTelemetry.addData("Sensor 3 Color", storageSubsystem.getSensor3Color());
             panelsTelemetry.addData("Sensor 4 Dist Triggered", storageSubsystem.getSensor4Value());
             panelsTelemetry.addData("Sensor 5 Dist Triggered", storageSubsystem.getSensor5Value());
             panelsTelemetry.addData("Intake Power", intakeSubsystem.getMotorPower());
             panelsTelemetry.addData("Transfer Power", storageSubsystem.getTransferMotorPower());
+            panelsTelemetry.addData("Nectar Gate Pos", storageSubsystem.getNectarGateServoPosition());
+            panelsTelemetry.addData("Pollen Gate Pos", storageSubsystem.getPollenGateServoPosition());
             panelsTelemetry.update(telemetry);
         }
     }

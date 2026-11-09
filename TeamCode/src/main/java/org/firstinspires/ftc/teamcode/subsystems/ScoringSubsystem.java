@@ -27,8 +27,6 @@ public class ScoringSubsystem extends SubsystemBase {
     private final DcMotorEx nectarTurretMotor;
     private final CRServo pollenTurretServo;
     private final CRServo nectarTurretServo;
-    private final Servo pollenGateServo;
-    private final Servo nectarGateServo;
     private final AnalogInput pollenTurretEncoder;
     private final AnalogInput nectarTurretEncoder;
     private final AprilTagProcessor aprilTag;
@@ -42,8 +40,7 @@ public class ScoringSubsystem extends SubsystemBase {
         nectarTurretMotor = hardwareMap.get(DcMotorEx.class, "nectarShooter"); // port 0 motor expansion hub (encoder)
         pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurret"); // port 5 servo expansion hub
         nectarTurretServo = hardwareMap.get(CRServo.class, "nectarTurret"); // port 5 servo control hub
-        pollenGateServo = hardwareMap.get(Servo.class, "pollenGate"); // port 0 servo expansion hub
-        nectarGateServo = hardwareMap.get(Servo.class, "nectarGate"); // port 0 servo control hub
+
         pollenTurretEncoder = hardwareMap.get(AnalogInput.class, "pollenEncoder"); // 0 analog control hub
         nectarTurretEncoder = hardwareMap.get(AnalogInput.class, "nectarEncoder"); // 0 analog expansion hub
 
@@ -141,13 +138,5 @@ public class ScoringSubsystem extends SubsystemBase {
         }
 
         return rawDegrees * ENCODER_TO_TURRET_RATIO;
-    }
-
-    public void setPollenGateServoPosition(double position) {
-        pollenGateServo.setPosition(position);
-    }
-
-    public void setNectarGateServoPosition(double position) {
-        nectarGateServo.setPosition(position);
     }
 }

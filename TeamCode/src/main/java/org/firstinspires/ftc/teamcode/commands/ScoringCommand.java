@@ -146,8 +146,8 @@ public class ScoringCommand extends CommandBase {
 
                 if (stateTimer.seconds() >= ALIGN_APRIL_TAG_TIME) {
                     stateTimer.reset();
-                    scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
-                    scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
+                    storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
+                    storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
                     storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
                     scoringState = ScoringRoutine.SHOOT;
                 }
@@ -168,8 +168,8 @@ public class ScoringCommand extends CommandBase {
 
                 break;
             case END:
-                scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
-                scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
+                storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
+                storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
                 storageSubsystem.setTransferMotorPower(0);
                 break;
         }
@@ -195,8 +195,8 @@ public class ScoringCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        scoringSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
-        scoringSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
+        storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
+        storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
         storageSubsystem.setTransferMotorPower(0);
         scoringSubsystem.setPollenTurretServoPower(0);
         scoringSubsystem.setNectarTurretServoPower(0);

@@ -13,18 +13,30 @@ public class Constants {
     // Intake
     public static double INTAKE_MOTOR_POWER = 1;
     public static double REVERSE_INTAKE_MOTOR_POWER = 0.5;
-    public static double OUT_TAKE_TIME = 0.35;
+    public static double OUT_TAKE_TIME = 0.2;
     public static double FLOWER_RIGHT_SERVO_DOWN = 0.8;
     public static double FLOWER_RIGHT_SERVO_UP = 0.2;
     public static double FLOWER_LEFT_SERVO_DOWN = 0.8;
     public static double FLOWER_LEFT_SERVO_UP = 0.2;
 
     // Storage
-    public static double COLOR_SENSOR_PROXIMITY = 7.0;
+    public static double POLLEN_GATE_OPEN_POSITION = 0.6;
+    public static double POLLEN_GATE_CLOSE_POSITION = 0.1;
+    public static double NECTAR_GATE_OPEN_POSITION = 0.6;
+    public static double NECTAR_GATE_CLOSE_POSITION = 0.1;
+    public static double NECTAR_GATE_HOLD_NECTAR_POSITION = 0.35;
+    public static double COLOR_SENSOR_PROXIMITY = 2.75;
     public static double COLOR_SENSOR_COLOR_THRESHOLD = 20.0;
     public static double DISTANCE_SENSOR_THRESHOLD = 3.0;
     public static double TRANSFER_MOTOR_POWER = 1;
     public static double REVERSE_TRANSFER_MOTOR_POWER = 0.5;
+        // Color
+        public static double YELLOW_LOWER_BOUND = 40;
+        public static double YELLOW_UPPER_BOUND = 150;
+        public static double BLUE_LOWER_BOUND = 200;
+        public static double BLUE_UPPER_BOUND = 270;
+        public static double RED_LOWER_BOUND = 300;
+        public static double RED_UPPER_BOUND = 40;
 
     // Scoring General
     public static double ENCODER_TO_TURRET_RATIO = 1.0 / 1.16;
@@ -33,10 +45,6 @@ public class Constants {
     public static double NECTAR_VELOCITY_MULTIPLIER = 0.07;
     public static double ALIGN_IMU_TIME = 0.6;
     public static double ALIGN_APRIL_TAG_TIME = 0.5;
-    public static double POLLEN_GATE_OPEN_POSITION = 0.6;
-    public static double POLLEN_GATE_CLOSE_POSITION = 0.1;
-    public static double NECTAR_GATE_OPEN_POSITION = 0.6;
-    public static double NECTAR_GATE_CLOSE_POSITION = 0.1;
     public static double SHOOTING_TIME = 0.4;
 
     // Live-Tunable PID Gains for Panels
