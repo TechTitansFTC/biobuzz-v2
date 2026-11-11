@@ -6,11 +6,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Servo Test")
 public class ServoTest extends LinearOpMode {
-    private Servo testServo;
 
     @Override
     public void runOpMode() {
-        testServo = hardwareMap.get(Servo.class, "nectarGate");
+        Servo testServo = hardwareMap.get(Servo.class, "servo");
 
         waitForStart();
         while (opModeIsActive()) {
@@ -21,6 +20,8 @@ public class ServoTest extends LinearOpMode {
                 testServo.setPosition(testServo.getPosition()-0.01);
             }
             telemetry.addData("Servo Position", testServo.getPosition());
+
+            telemetry.update();
         }
     }
 }
