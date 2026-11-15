@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.game;
-
-import static org.firstinspires.ftc.teamcode.util.Constants.*;
+package org.firstinspires.ftc.teamcode.game.tests.subsystemTests;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
@@ -15,7 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 
 @Configurable
-@TeleOp(name = "1. Intake & Storage Tuner", group = "Tuners")
 public class IntakeStorageTunerOpMode extends LinearOpMode {
     public static boolean RUN_AUTO_STORAGE_LOGIC = false;
 

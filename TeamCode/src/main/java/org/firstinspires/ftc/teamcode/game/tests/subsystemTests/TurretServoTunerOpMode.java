@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.game;
+package org.firstinspires.ftc.teamcode.game.tests.subsystemTests;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.*;
 
@@ -6,7 +6,6 @@ import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
 import org.firstinspires.ftc.teamcode.util.PIDController;
 
 @Configurable
-@TeleOp(name = "2. Turret Servo & Vision Tuner", group = "Tuners")
+//@TeleOp(name = "2. Turret Servo & Vision Tuner", group = "Tuners")
 public class TurretServoTunerOpMode extends LinearOpMode {
     // 0 = Manual Joystick, 1 = Angle PID Tuner, 2 = AprilTag Tracking
     public static int TUNING_MODE = 1;

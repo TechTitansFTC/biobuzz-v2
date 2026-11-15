@@ -22,8 +22,10 @@ public class Constants {
     // Storage
     public static double POLLEN_GATE_OPEN_POSITION = 0.6;
     public static double POLLEN_GATE_CLOSE_POSITION = 0.1;
-    public static double NECTAR_GATE_OPEN_POSITION = 0.6;
-    public static double NECTAR_GATE_CLOSE_POSITION = 0.1;
+    public static double LEFT_NECTAR_GATE_OPEN_POSITION = 0.6;
+    public static double LEFT_NECTAR_GATE_CLOSE_POSITION = 0.6;
+    public static double RIGHT_NECTAR_GATE_OPEN_POSITION = 0.6;
+    public static double RIGHT_NECTAR_GATE_CLOSE_POSITION = 0.6;
     public static double NECTAR_GATE_HOLD_NECTAR_POSITION = 0.35;
     public static double COLOR_SENSOR_PROXIMITY = 2.75;
     public static double COLOR_SENSOR_COLOR_THRESHOLD = 20.0;
@@ -47,13 +49,11 @@ public class Constants {
     public static double ALIGN_APRIL_TAG_TIME = 0.5;
     public static double SHOOTING_TIME = 0.4;
 
-    // Live-Tunable PID Gains for Panels
     public static double POLLEN_SERVO_KP = 0.06, POLLEN_SERVO_KI = 0.0001, POLLEN_SERVO_KD = 0.005, POLLEN_SERVO_KF = 0.0;
     public static double NECTAR_SERVO_KP = 0.06, NECTAR_SERVO_KI = 0.0001, NECTAR_SERVO_KD = 0.005, NECTAR_SERVO_KF = 0.0;
     public static double POLLEN_MOTOR_KP = 0.5, POLLEN_MOTOR_KI = 0.0001, POLLEN_MOTOR_KD = 0.005, POLLEN_MOTOR_KF = 0.005;
     public static double NECTAR_MOTOR_KP = 0.5, NECTAR_MOTOR_KI = 0.0001, NECTAR_MOTOR_KD = 0.005, NECTAR_MOTOR_KF = 0.005;
 
-    // Existing arrays and methods for compatibility with ScoringCommand
     public static double[] POLLEN_TURRET_SERVO_CONTROLLER = new double[]{POLLEN_SERVO_KP, POLLEN_SERVO_KI, POLLEN_SERVO_KD, POLLEN_SERVO_KF};
     public static double[] NECTAR_TURRET_SERVO_CONTROLLER = new double[]{NECTAR_SERVO_KP, NECTAR_SERVO_KI, NECTAR_SERVO_KD, NECTAR_SERVO_KF};
     public static double[] POLLEN_TURRET_MOTOR_CONTROLLER = new double[]{POLLEN_MOTOR_KP, POLLEN_MOTOR_KI, POLLEN_MOTOR_KD, POLLEN_MOTOR_KF};

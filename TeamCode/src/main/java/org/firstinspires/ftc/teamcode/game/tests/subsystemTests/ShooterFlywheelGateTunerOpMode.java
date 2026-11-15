@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.game;
+package org.firstinspires.ftc.teamcode.game.tests.subsystemTests;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.*;
 
@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
 import org.firstinspires.ftc.teamcode.util.PIDController;
 
 @Configurable
-@TeleOp(name = "3. Shooter RPM & Gate Tuner", group = "Tuners")
+//@TeleOp(name = "3. Shooter RPM & Gate Tuner", group = "Tuners")
 public class ShooterFlywheelGateTunerOpMode extends LinearOpMode {
     public static boolean USE_DISTANCE_MODEL = false;
     public static double TEST_DISTANCE_INCHES = 60.0;

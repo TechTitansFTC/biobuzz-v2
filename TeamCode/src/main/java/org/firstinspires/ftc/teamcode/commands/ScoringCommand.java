@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_APRIL_TAG_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_IMU_TIME;
+import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_VELOCITY_MODEL;
@@ -169,7 +170,7 @@ public class ScoringCommand extends CommandBase {
                 break;
             case END:
                 storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
-                storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
+                storageSubsystem.setNectarGateServoPosition(LEFT_NECTAR_GATE_CLOSE_POSITION); // TODO: Fix this
                 storageSubsystem.setTransferMotorPower(0);
                 break;
         }
