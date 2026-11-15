@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.game.tests.subsystemTests.TurretServoTunerOpMode;
 
 public class StorageSubsystem extends SubsystemBase {
     /*
@@ -37,7 +38,8 @@ public class StorageSubsystem extends SubsystemBase {
     private final DigitalChannel sensor4;
     private final DigitalChannel sensor5;
     private final Servo pollenGateServo;
-    private final Servo nectarGateServo;
+    private final Servo leftNectarGateServo;
+    private final Servo rightNectarGateServo;
     private final Telemetry telemetry;
 
     private final DcMotor transferMotor;
@@ -63,8 +65,9 @@ public class StorageSubsystem extends SubsystemBase {
         transferMotor = hardwareMap.get(DcMotor.class, "transfer"); // port 2 motor control hub
         transferMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        pollenGateServo = hardwareMap.get(Servo.class, "pollenGate"); // port 0 servo control hub
-        nectarGateServo = hardwareMap.get(Servo.class, "nectarGate"); // port 0 servo expansion hub
+        pollenGateServo = hardwareMap.get(Servo.class, "pollenGate"); // port 2 servo control hub
+        leftNectarGateServo = hardwareMap.get(Servo.class, "leftNectarGate"); // port 5 servo expansion hub
+        rightNectarGateServo = hardwareMap.get(Servo.class, "rightNectarGate"); // port 5 servo control hub
 
         this.telemetry = telemetry;
 
@@ -85,7 +88,7 @@ public class StorageSubsystem extends SubsystemBase {
 
         telemetry.addData("", "");
         telemetry.addData("Transfer Motor Power", getTransferMotorPower());
-        telemetry.addData("Nectar Gate Position", getNectarGateServoPosition());
+//        telemetry.addData("Nectar Gate Position", getNectarGateServoPosition());
         telemetry.addData("Pollen Gate Position", getPollenGateServoPosition());
     }
 
@@ -164,15 +167,19 @@ public class StorageSubsystem extends SubsystemBase {
         pollenGateServo.setPosition(position);
     }
 
-    public void setNectarGateServoPosition(double position) {
-        nectarGateServo.setPosition(position);
+    public void setLeftNectarGateServoPosition(double position) {
+        leftNectarGateServo.setPosition(position);
+    }
+
+    public void setRightNectarGateServo(double position) {
+        rightNectarGateServo.setPosition(position);
     }
 
     public double getPollenGateServoPosition() {
         return pollenGateServo.getPosition();
     }
 
-    public double getNectarGateServoPosition() {
-        return nectarGateServo.getPosition();
-    }
+//    public double getNectarGateServoPosition() {
+//        return nectarGateServo.getPosition();
+//    }
 }

@@ -73,7 +73,7 @@ public class IntakeStorageTunerOpMode extends LinearOpMode {
             panelsTelemetry.addData("Sensor 5 Dist Triggered", storageSubsystem.getSensor5Value());
             panelsTelemetry.addData("Intake Power", intakeSubsystem.getMotorPower());
             panelsTelemetry.addData("Transfer Power", storageSubsystem.getTransferMotorPower());
-            panelsTelemetry.addData("Nectar Gate Pos", storageSubsystem.getNectarGateServoPosition());
+//            panelsTelemetry.addData("Nectar Gate Pos", storageSubsystem.getNectarGateServoPosition());
             panelsTelemetry.addData("Pollen Gate Pos", storageSubsystem.getPollenGateServoPosition());
             panelsTelemetry.update(telemetry);
         }

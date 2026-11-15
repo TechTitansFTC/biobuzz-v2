@@ -26,7 +26,7 @@ public class Constants {
     public static double LEFT_NECTAR_GATE_CLOSE_POSITION = 0.6;
     public static double RIGHT_NECTAR_GATE_OPEN_POSITION = 0.6;
     public static double RIGHT_NECTAR_GATE_CLOSE_POSITION = 0.6;
-    public static double NECTAR_GATE_HOLD_NECTAR_POSITION = 0.35;
+    public static double NECTAR_GATE_HOLD_NECTAR_POSITION = 0.6;
     public static double COLOR_SENSOR_PROXIMITY = 2.75;
     public static double COLOR_SENSOR_COLOR_THRESHOLD = 20.0;
     public static double DISTANCE_SENSOR_THRESHOLD = 3.0;
