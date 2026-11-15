@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_APRIL_TAG_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.ALIGN_IMU_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_CLOSE_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_OPEN_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_VELOCITY_MODEL;
@@ -11,8 +12,6 @@ import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_VELOCITY_MODEL;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
-import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_CLOSE_POSITION;
-import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_OPEN_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_OPEN_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.SHOOTING_TIME;
@@ -148,7 +147,7 @@ public class ScoringCommand extends CommandBase {
                 if (stateTimer.seconds() >= ALIGN_APRIL_TAG_TIME) {
                     stateTimer.reset();
                     storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
-                    storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_OPEN_POSITION);
+                    storageSubsystem.setNectarGateServoPosition(LEFT_NECTAR_GATE_OPEN_POSITION);
                     storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
                     scoringState = ScoringRoutine.SHOOT;
                 }
@@ -197,7 +196,7 @@ public class ScoringCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
-        storageSubsystem.setNectarGateServoPosition(NECTAR_GATE_CLOSE_POSITION);
+        storageSubsystem.setNectarGateServoPosition(LEFT_NECTAR_GATE_CLOSE_POSITION); // TODO: FIX
         storageSubsystem.setTransferMotorPower(0);
         scoringSubsystem.setPollenTurretServoPower(0);
         scoringSubsystem.setNectarTurretServoPower(0);
