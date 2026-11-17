@@ -14,10 +14,10 @@ public class Constants {
     public static double INTAKE_MOTOR_POWER = 1;
     public static double REVERSE_INTAKE_MOTOR_POWER = 0.5;
     public static double OUT_TAKE_TIME = 0.2;
-    public static double FLOWER_RIGHT_SERVO_DOWN = 0.8;
-    public static double FLOWER_RIGHT_SERVO_UP = 0.2;
-    public static double FLOWER_LEFT_SERVO_DOWN = 0.8;
-    public static double FLOWER_LEFT_SERVO_UP = 0.2;
+    public static double FLOWER_RIGHT_SERVO_DOWN = 0.8022;
+    public static double FLOWER_RIGHT_SERVO_UP = 0.4317;
+    public static double FLOWER_LEFT_SERVO_DOWN = 0.6094;
+    public static double FLOWER_LEFT_SERVO_UP = 0.2394;
 
     // Storage
     public static double POLLEN_GATE_OPEN_POSITION = 0.6;
@@ -41,7 +41,7 @@ public class Constants {
         public static double RED_UPPER_BOUND = 40;
 
     // Scoring General
-    public static double ENCODER_TO_TURRET_RATIO = 1.0 / 1.16;
+    public static double ENCODER_TO_TURRET_RATIO = 1.0 / 2.75;
     public static double TURRET_OFFSET_DISTANCE = 5.669;
     public static double POLLEN_VELOCITY_MULTIPLIER = 0.06;
     public static double NECTAR_VELOCITY_MULTIPLIER = 0.07;
@@ -49,7 +49,7 @@ public class Constants {
     public static double ALIGN_APRIL_TAG_TIME = 0.5;
     public static double SHOOTING_TIME = 0.4;
 
-    public static double POLLEN_SERVO_KP = 0.06, POLLEN_SERVO_KI = 0.0001, POLLEN_SERVO_KD = 0.005, POLLEN_SERVO_KF = 0.0;
+    public static double POLLEN_SERVO_KP = 0.005, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0, POLLEN_SERVO_KF = 0;
     public static double NECTAR_SERVO_KP = 0.06, NECTAR_SERVO_KI = 0.0001, NECTAR_SERVO_KD = 0.005, NECTAR_SERVO_KF = 0.0;
     public static double POLLEN_MOTOR_KP = 0.5, POLLEN_MOTOR_KI = 0.0001, POLLEN_MOTOR_KD = 0.005, POLLEN_MOTOR_KF = 0.005;
     public static double NECTAR_MOTOR_KP = 0.5, NECTAR_MOTOR_KI = 0.0001, NECTAR_MOTOR_KD = 0.005, NECTAR_MOTOR_KF = 0.005;

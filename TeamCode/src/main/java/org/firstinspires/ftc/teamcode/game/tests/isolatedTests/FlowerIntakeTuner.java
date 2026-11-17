@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class FlowerIntakeTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Servo leftFlowerIntakeServo = hardwareMap.get(Servo.class, "leftFlowerServo");
-        Servo rightFlowerIntakeServo = hardwareMap.get(Servo.class, "rightFlowerServo");
+        Servo leftFlowerIntakeServo = hardwareMap.get(Servo.class, "leftFlowerIntake");
+        Servo rightFlowerIntakeServo = hardwareMap.get(Servo.class, "rightFlowerIntake");
 
         rightFlowerIntakeServo.setDirection(Servo.Direction.REVERSE);
 
@@ -17,9 +17,15 @@ public class FlowerIntakeTuner extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad1.aWasPressed()) {
                 leftFlowerIntakeServo.setPosition(leftFlowerIntakeServo.getPosition() - 0.01);
-                rightFlowerIntakeServo.setPosition(rightFlowerIntakeServo.getPosition() - 0.01);
-            } else if (gamepad1.bWasPressed()) {
+
+            }
+            if (gamepad1.bWasPressed()) {
                 leftFlowerIntakeServo.setPosition(leftFlowerIntakeServo.getPosition() + 0.01);
+            }
+            if (gamepad1.xWasPressed()) {
+                rightFlowerIntakeServo.setPosition(rightFlowerIntakeServo.getPosition() - 0.01);
+            }
+            if (gamepad1.yWasPressed()) {
                 rightFlowerIntakeServo.setPosition(rightFlowerIntakeServo.getPosition() + 0.01);
             }
 

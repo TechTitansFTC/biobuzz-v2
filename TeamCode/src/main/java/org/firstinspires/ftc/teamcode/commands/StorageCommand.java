@@ -49,17 +49,9 @@ public class StorageCommand extends CommandBase {
             return;
         }
         int count = 0;
-        if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED || storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE) &&
-                (storageSubsystem.getSensor3Color() == StorageSubsystem.GamePieceColor.RED || storageSubsystem.getSensor3Color() == StorageSubsystem.GamePieceColor.BLUE)) {
-            storageSubsystem.setLeftNectarGateServoPosition(NECTAR_GATE_HOLD_NECTAR_POSITION);
-            storageSubsystem.setRightNectarGateServo(NECTAR_GATE_HOLD_NECTAR_POSITION);
-        } else {
-            storageSubsystem.setLeftNectarGateServoPosition(LEFT_NECTAR_GATE_CLOSE_POSITION);
-            storageSubsystem.setRightNectarGateServo(RIGHT_NECTAR_GATE_CLOSE_POSITION);
-        }
         storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
         if (storageSubsystem.getSensor1Color() != StorageSubsystem.GamePieceColor.NONE) count++;
-        if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED && TEAM.equals("B")) || (storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE && TEAM.equals("R"))) {
+        if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED) || (storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE)) {
             intakeSubsystem.setMotorPower(-REVERSE_INTAKE_MOTOR_POWER);
             storageSubsystem.setTransferMotorPower(-REVERSE_TRANSFER_MOTOR_POWER);
             outTakingTimer.reset();

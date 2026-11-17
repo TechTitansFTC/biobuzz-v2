@@ -17,7 +17,7 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double x = -gamepad.getLeftX();
+        double x = gamepad.getLeftX();
         double y = gamepad.getLeftY();
         double rotation = gamepad.getRightX();
 

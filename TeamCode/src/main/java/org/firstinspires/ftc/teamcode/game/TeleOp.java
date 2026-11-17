@@ -14,6 +14,7 @@ import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.FlowerIntakeCommand;
+import org.firstinspires.ftc.teamcode.commands.ReverseCommand;
 import org.firstinspires.ftc.teamcode.commands.ScoringCommand;
 import org.firstinspires.ftc.teamcode.commands.StorageCommand;
 import org.firstinspires.ftc.teamcode.subsystems.FlowerSubsystem;
@@ -33,6 +34,7 @@ public class TeleOp extends OpMode {
     ScoringCommand scoringCommand;
     StorageCommand storageCommand;
     FlowerIntakeCommand flowerIntakeCommand;
+    ReverseCommand reverseCommand;
     IMU imu;
     GamepadEx gamepadEx;
     Follower follower;
@@ -49,25 +51,28 @@ public class TeleOp extends OpMode {
         // Subsystems
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,imu,telemetry);
         intakeSubsystem = new IntakeSubsystem(hardwareMap, telemetry);
-        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
+//        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
         flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
-        scoringCommand = new ScoringCommand(scoringSubsystem, storageSubsystem, follower);
+//        scoringCommand = new ScoringCommand(scoringSubsystem, storageSubsystem, follower);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
+        reverseCommand = new ReverseCommand(storageSubsystem, intakeSubsystem);
 
         // Bindings
         mecanumDriveSubsystem.setDefaultCommand(driveCommand);
         storageSubsystem.setDefaultCommand(storageCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(() -> mecanumDriveSubsystem.resetIMU());
-        gamepadEx.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(scoringCommand);
+//        gamepadEx.getGamepadButton(GamepadKeys.Button.X)
+//                .whenPressed(scoringCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenHeld(flowerIntakeCommand);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenHeld(reverseCommand);
     }
 
     @Override
