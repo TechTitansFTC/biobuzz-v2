@@ -51,7 +51,7 @@ public class ScoringSubsystem extends SubsystemBase {
 
         pollenTurretCamera = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "pollenTurretCamera"))
-                .setCameraResolution(Size.parseSize("640x400"))
+                .setCameraResolution(new Size(640, 400))
                 .addProcessor(aprilTag)
                 .build();
 
@@ -109,7 +109,7 @@ public class ScoringSubsystem extends SubsystemBase {
                 }
             }
         }
-        return 0.0;
+        return 361.0;
     }
 
     public double getPollenTurretAngleDegrees() {

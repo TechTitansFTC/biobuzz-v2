@@ -61,4 +61,10 @@ public class Constants {
 
     public static double POLLEN_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * POLLEN_VELOCITY_MULTIPLIER; }
     public static double NECTAR_TURRET_VELOCITY_MODEL(double distanceInches) { return distanceInches * NECTAR_VELOCITY_MULTIPLIER; }
+
+    // Autonomous
+    public static double PARK_TIME = 5.0;
+    public static double SHOOTER_SPIN_UP_TIME = 3.0;
+    public static double AUTO_INTAKE_TIME = 1.0;
+    public static double APRIL_TAG_ALIGN_DETECTION_TIME = 1.0;
 }

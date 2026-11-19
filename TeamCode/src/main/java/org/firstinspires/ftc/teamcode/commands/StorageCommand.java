@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.INTAKE_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_HOLD_NECTAR_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.OUT_TAKE_TIME;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.REVERSE_INTAKE_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.REVERSE_TRANSFER_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.RIGHT_NECTAR_GATE_CLOSE_POSITION;
@@ -42,6 +43,7 @@ public class StorageCommand extends CommandBase {
     public void execute() {
         storageSubsystem.setLeftNectarGateServoPosition(LEFT_NECTAR_GATE_CLOSE_POSITION);
         storageSubsystem.setRightNectarGateServo(RIGHT_NECTAR_GATE_CLOSE_POSITION);
+        storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
         if (outTaking) {
             if (outTakingTimer.seconds() >= OUT_TAKE_TIME) {
                 outTaking = false;
