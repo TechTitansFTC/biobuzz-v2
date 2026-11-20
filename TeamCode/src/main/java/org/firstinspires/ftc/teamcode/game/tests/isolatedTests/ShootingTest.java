@@ -40,13 +40,14 @@ public class ShootingTest extends LinearOpMode {
 
     public static double kS = 0.0;
     public static double kV = 0.00017;   // ~1 / (max RPM at 12V)
-    public static double kP = 0.0005;
-    public static double kI = 0.0;
+    public static double kP = 0.001;
+    public static double kI = 0.000007;
     public static double kD = 0.0;
 
     public static double TICKS_PER_REV = 28;      // bare motor encoder
     public static double NOMINAL_VOLTAGE = 12.0;
-    public static boolean REVERSE_MOTOR = false;
+    public static boolean REVERSE_MOTOR = true;    // flips which way the wheel spins
+    public static boolean REVERSE_ENCODER = true;  // flips only the RPM reading (set true if RPM reads negative)
     public static double RPM_FILTER = 0.3;  // 1 = no smoothing, lower = smoother
     public static boolean FEED = true;   // intake + transfer on, pollen gate open
 
@@ -98,7 +99,10 @@ public class ShootingTest extends LinearOpMode {
 
             // Raw encoder velocity is noisy; smooth it before the PID sees it.
             // RPM_FILTER = 1 -> no filtering, smaller -> smoother but slower to react.
+            // setDirection() flips power AND encoder together, so if the encoder counts the
+            // opposite way from the power, only this flag can fix it.
             double rawRpm = pollenShooter.getVelocity() * 60.0 / TICKS_PER_REV;
+            if (REVERSE_ENCODER) rawRpm = -rawRpm;
             filteredRpm += Range.clip(RPM_FILTER, 0.01, 1) * (rawRpm - filteredRpm);
             double rpm = filteredRpm;
             double target = TARGET_RPM;
