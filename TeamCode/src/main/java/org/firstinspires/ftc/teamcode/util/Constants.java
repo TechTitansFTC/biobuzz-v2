@@ -49,6 +49,28 @@ public class Constants {
     public static double ALIGN_APRIL_TAG_TIME = 0.5;
     public static double SHOOTING_TIME = 0.4;
 
+    // Pollen shooter velocity control (values from ShootingTest)
+    // power = (kS + kV * targetRPM) * (NOMINAL_VOLTAGE / battery) + PID(targetRPM - rpm)
+    public static double POLLEN_SHOOTER_TARGET_RPM = 3200;
+    public static double POLLEN_SHOOTER_RPM_TOLERANCE = 50;      // shoot once within +/- this
+    public static double POLLEN_SHOOTER_KS = 0.0;
+    public static double POLLEN_SHOOTER_KV = 0.00017;
+    public static double POLLEN_SHOOTER_KP = 0.0007;
+    public static double POLLEN_SHOOTER_KI = 0.0;
+    public static double POLLEN_SHOOTER_KD = 0.0;
+    public static double POLLEN_SHOOTER_RPM_FILTER = 0.3;        // 1 = no smoothing, lower = smoother
+    public static boolean POLLEN_SHOOTER_MOTOR_REVERSED = true;     // flips which way the wheel spins
+    public static boolean POLLEN_SHOOTER_ENCODER_REVERSED = true;   // flips only the RPM reading
+    public static double NOMINAL_VOLTAGE = 12.0;
+    public static double POLLEN_ALIGN_TIMEOUT = 3.0;             // give up if not up to speed by then
+
+    // Pollen turret AprilTag alignment (copy the kp/ki/kd/kf/reverse you tuned in CameraTest)
+    public static double POLLEN_TURRET_TAG_KP = 0.0;
+    public static double POLLEN_TURRET_TAG_KI = 0.0;
+    public static double POLLEN_TURRET_TAG_KD = 0.0;
+    public static double POLLEN_TURRET_TAG_KF = 0.0;
+    public static boolean POLLEN_TURRET_TAG_REVERSED = false;
+
     public static double POLLEN_SERVO_KP = 0.005, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0, POLLEN_SERVO_KF = 0;
     public static double NECTAR_SERVO_KP = 0.06, NECTAR_SERVO_KI = 0.0001, NECTAR_SERVO_KD = 0.005, NECTAR_SERVO_KF = 0.0;
     public static double POLLEN_MOTOR_KP = 0.5, POLLEN_MOTOR_KI = 0.0001, POLLEN_MOTOR_KD = 0.005, POLLEN_MOTOR_KF = 0.005;
