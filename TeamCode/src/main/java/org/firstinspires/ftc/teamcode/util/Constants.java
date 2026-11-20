@@ -49,7 +49,7 @@ public class Constants {
     public static double ALIGN_APRIL_TAG_TIME = 0.5;
     public static double SHOOTING_TIME = 0.4;
 
-    public static double POLLEN_SERVO_KP = 0.005, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0, POLLEN_SERVO_KF = 0;
+    public static double POLLEN_SERVO_KP = 0.003, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0.000000004, POLLEN_SERVO_KF = 0.06;
     public static double NECTAR_SERVO_KP = 0.06, NECTAR_SERVO_KI = 0.0001, NECTAR_SERVO_KD = 0.005, NECTAR_SERVO_KF = 0.0;
     public static double POLLEN_MOTOR_KP = 0.5, POLLEN_MOTOR_KI = 0.0001, POLLEN_MOTOR_KD = 0.005, POLLEN_MOTOR_KF = 0.005;
     public static double NECTAR_MOTOR_KP = 0.5, NECTAR_MOTOR_KI = 0.0001, NECTAR_MOTOR_KD = 0.005, NECTAR_MOTOR_KF = 0.005;

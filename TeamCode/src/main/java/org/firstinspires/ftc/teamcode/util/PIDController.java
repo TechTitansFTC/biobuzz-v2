@@ -53,7 +53,12 @@ public class PIDController {
         double derivativeTerm = kd * ((error - previousError) / deltaTime);
 
         // Feedforward term
-        double feedforwardTerm = kf;
+        double feedforwardTerm = 0;
+        if (currentValue - target < 0) {
+            feedforwardTerm = kf;
+        } else if (currentValue - target > 0) {
+            feedforwardTerm = -kf;
+        }
 
         // Calculate the output value
         double output = proportionalTerm + integralTerm + derivativeTerm + feedforwardTerm;
