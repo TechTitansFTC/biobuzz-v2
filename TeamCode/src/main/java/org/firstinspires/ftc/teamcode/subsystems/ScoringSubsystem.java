@@ -105,10 +105,11 @@ public class ScoringSubsystem extends SubsystemBase {
                         continue;
                     }
 
-                    return clusterDet.ftcPose.bearing;
+                    return -clusterDet.ftcPose.bearing;
                 }
             }
         }
+
         return 361.0;
     }
 

@@ -7,6 +7,14 @@ import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_OPE
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_VELOCITY_MODEL;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_MOTOR_KD;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_MOTOR_KF;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_MOTOR_KI;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_MOTOR_KP;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KD;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KF;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KI;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KP;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_MOTOR_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_CONTROLLER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_VELOCITY_MODEL;
@@ -76,6 +84,10 @@ public class ScoringCommand extends CommandBase {
 
     @Override
     public void execute() {
+        // Re-read the individual constants every loop so Panels edits apply live.
+        pollenTurretServoController.setConstants(POLLEN_SERVO_KP, POLLEN_SERVO_KI, POLLEN_SERVO_KD, POLLEN_SERVO_KF);
+        pollenTurretMotorController.setConstants(POLLEN_MOTOR_KP, POLLEN_MOTOR_KI, POLLEN_MOTOR_KD, POLLEN_MOTOR_KF);
+
         switch (scoringState) {
             case CALCULATE:
                 double currX = follower.pose().x() ;

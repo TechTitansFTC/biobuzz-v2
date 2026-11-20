@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode.game.tests.isolatedTests;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_TURRET_SERVO_CONTROLLER;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KD;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KF;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KI;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SERVO_KP;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_SERVO_CONTROLLER;
 
 import com.bylazar.configurables.annotations.Configurable;
@@ -40,12 +44,15 @@ public class TurretSetPosition extends LinearOpMode {
 //            double nectarTargetPositionEncoder = nectarTargetPositionTurret / ENCODER_TO_TURRET_RATIO;
             double pollenTargetPositionEncoder = pollenTargetPositionTurret / ENCODER_TO_TURRET_RATIO;
 
-            pollenTurretServoController.setConstants(POLLEN_TURRET_SERVO_CONTROLLER[0], POLLEN_TURRET_SERVO_CONTROLLER[1],
-                    POLLEN_TURRET_SERVO_CONTROLLER[2], POLLEN_TURRET_SERVO_CONTROLLER[3]);
+            // Read the individual constants (not the array) so Panels edits apply live.
+            pollenTurretServoController.setConstants(POLLEN_SERVO_KP, POLLEN_SERVO_KI, POLLEN_SERVO_KD, POLLEN_SERVO_KF);
 //            nectarTurretServoController.setConstants(NECTAR_TURRET_SERVO_CONTROLLER[0], NECTAR_TURRET_SERVO_CONTROLLER[1],
 //                    NECTAR_TURRET_SERVO_CONTROLLER[2], NECTAR_TURRET_SERVO_CONTROLLER[3]);
 
-            pollenTurretServoController.setTarget(pollenTargetPositionTurret);
+            // setTarget() resets the integral, so only call it when the target changes.
+            if (pollenTurretServoController.getTarget() != pollenTargetPositionTurret) {
+                pollenTurretServoController.setTarget(pollenTargetPositionTurret);
+            }
 //            nectarTurretServoController.setTarget(nectarTargetPositionTurret);
             double angle = getPollenTurretAngleDegrees(pollenTurretEncoder);
             double rawAngle =getPollenTurretAngleDegreesRaw(pollenTurretEncoder);
