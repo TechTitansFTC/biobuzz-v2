@@ -20,13 +20,13 @@ public class FlowerIntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        flowerSubsystem.setLeftServoPosition(FLOWER_LEFT_SERVO_DOWN);
+//        flowerSubsystem.setLeftServoPosition(FLOWER_LEFT_SERVO_DOWN);
         flowerSubsystem.setRightServoPosition(FLOWER_RIGHT_SERVO_DOWN);
     }
 
     @Override
     public void end(boolean interrupted) {
-        flowerSubsystem.setLeftServoPosition(FLOWER_LEFT_SERVO_UP);
+//        flowerSubsystem.setLeftServoPosition(FLOWER_LEFT_SERVO_UP);
         flowerSubsystem.setRightServoPosition(FLOWER_RIGHT_SERVO_UP);
     }
 }

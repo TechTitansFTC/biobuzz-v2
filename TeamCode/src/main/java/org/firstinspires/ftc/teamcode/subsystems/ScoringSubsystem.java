@@ -16,6 +16,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 
 import android.util.Size;
 
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -49,6 +50,8 @@ public class ScoringSubsystem extends SubsystemBase {
     private final VisionPortal pollenTurretCamera;
     private final VoltageSensor battery;
     private final Telemetry telemetry;
+    private final Follower follower;
+    private double distanceToScore;
 
     // Pollen flywheel velocity control (runs in periodic)
     private final PIDController shooterController =
@@ -57,8 +60,9 @@ public class ScoringSubsystem extends SubsystemBase {
     private double filteredRpm = 0;
     private boolean firstShooterUpdate = true;
     private boolean pollenShooterEnabled = true; // on for the whole match unless toggled off with B
+    private static double POLLEN_SHOOTER_TARGET_RPM_CHANGE = POLLEN_SHOOTER_TARGET_RPM;
 
-    public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry, Follower follower) {
         this.telemetry = telemetry;
 
         pollenTurretMotor = hardwareMap.get(DcMotorEx.class, "pollenShooter"); // port 3 motor control hub
@@ -75,6 +79,8 @@ public class ScoringSubsystem extends SubsystemBase {
         pollenTurretMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         battery = hardwareMap.voltageSensor.iterator().next();
+        this.follower = follower;
+        distanceToScore = getDistanceToScore(follower);
 
         aprilTag = new AprilTagProcessor.Builder().build();
 
@@ -92,12 +98,18 @@ public class ScoringSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updatePollenShooter();
+        distanceToScore = getDistanceToScore(follower);
 
         telemetry.addData("Camera bearing", getBearing());
         telemetry.addData("Pollen shooter on (B)", pollenShooterEnabled);
         telemetry.addData("Pollen shooter RPM", filteredRpm);
         telemetry.addData("Pollen shooter target", POLLEN_SHOOTER_TARGET_RPM);
         telemetry.addData("Pollen shooter at speed", isPollenShooterAtSpeed());
+        telemetry.addData("", "");
+        telemetry.addData("NOW DATA", "");
+        telemetry.addData("Distance to score", distanceToScore);
+        telemetry.addData("pose x", follower.pose().x());
+        telemetry.addData("pose y", follower.pose().y());
     }
 
     /**
@@ -122,8 +134,8 @@ public class ScoringSubsystem extends SubsystemBase {
 
         // Re-read gains every loop so Panels edits apply live.
         shooterController.setConstants(POLLEN_SHOOTER_KP, POLLEN_SHOOTER_KI, POLLEN_SHOOTER_KD, 0);
-        if (shooterController.getTarget() != POLLEN_SHOOTER_TARGET_RPM) {
-            shooterController.setTarget(POLLEN_SHOOTER_TARGET_RPM);
+        if (shooterController.getTarget() != POLLEN_SHOOTER_TARGET_RPM_CHANGE) {
+            shooterController.setTarget(POLLEN_SHOOTER_TARGET_RPM_CHANGE);
         }
 
         if (!pollenShooterEnabled) {
@@ -244,5 +256,27 @@ public class ScoringSubsystem extends SubsystemBase {
         }
 
         return rawDegrees * ENCODER_TO_TURRET_RATIO;
+    }
+
+    public double getDistanceToScore(Follower follower) {
+        double robotX = follower.pose().x();
+        double robotY = follower.pose().y();
+        double score1X;
+        double score2X;
+        if (TEAM.equals("R")) {
+            score1X = 57;
+            score2X = 57;
+        } else {
+            score1X = 81;
+            score2X = 81;
+        }
+
+        double score1Y = 48;
+        double score2Y = 96;
+
+        double distanceFromScore1 = Math.sqrt(Math.pow(robotX - score1X, 2) + Math.pow(robotY - score1Y, 2));
+        double distanceFromScore2 = Math.sqrt(Math.pow(robotX - score2X, 2) + Math.pow(robotY - score2Y, 2));
+
+        return Math.min(distanceFromScore1, distanceFromScore2);
     }
 }

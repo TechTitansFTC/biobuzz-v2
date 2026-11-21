@@ -26,7 +26,7 @@ public class TurretServoTunerOpMode extends LinearOpMode {
         CommandScheduler.getInstance().reset();
         TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
-        ScoringSubsystem scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
+//        ScoringSubsystem scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, );
 
         PIDController pollenServoPID = new PIDController(POLLEN_SERVO_KP, POLLEN_SERVO_KI, POLLEN_SERVO_KD, POLLEN_SERVO_KF);
         PIDController nectarServoPID = new PIDController(NECTAR_SERVO_KP, NECTAR_SERVO_KI, NECTAR_SERVO_KD, NECTAR_SERVO_KF);
@@ -57,9 +57,9 @@ public class TurretServoTunerOpMode extends LinearOpMode {
             dpadRightLast = gamepad1.dpad_right;
             dpadLeftLast = gamepad1.dpad_left;
 
-            double pollenAngle = scoringSubsystem.getPollenTurretAngleDegrees();
-            double nectarAngle = scoringSubsystem.getNectarTurretAngleDegrees();
-            double bearing = scoringSubsystem.getBearing();
+//            double pollenAngle = scoringSubsystem.getPollenTurretAngleDegrees();
+//            double nectarAngle = scoringSubsystem.getNectarTurretAngleDegrees();
+//            double bearing = scoringSubsystem.getBearing();
 
             double pollenPower = 0;
             double nectarPower = 0;
@@ -73,29 +73,29 @@ public class TurretServoTunerOpMode extends LinearOpMode {
                 if (pollenServoPID.getTarget() != TARGET_POLLEN_ANGLE) pollenServoPID.setTarget(TARGET_POLLEN_ANGLE);
                 if (nectarServoPID.getTarget() != TARGET_NECTAR_ANGLE) nectarServoPID.setTarget(TARGET_NECTAR_ANGLE);
 
-                pollenPower = pollenServoPID.calculateOutput(pollenAngle, dt);
-                nectarPower = nectarServoPID.calculateOutput(nectarAngle, dt);
+//                pollenPower = pollenServoPID.calculateOutput(pollenAngle, dt);
+//                nectarPower = nectarServoPID.calculateOutput(nectarAngle, dt);
             } else if (TUNING_MODE == 2) {
                 // Mode 2: Live AprilTag Alignment Test
-                double nectarTarget = getSecondTurretBearing(TEST_LATERAL_DISTANCE, TURRET_OFFSET_DISTANCE, bearing);
+//                double nectarTarget = getSecondTurretBearing(TEST_LATERAL_DISTANCE, TURRET_OFFSET_DISTANCE, bearing);
                 pollenServoPID.setTarget(0.0);
-                nectarServoPID.setTarget(nectarTarget);
-
-                pollenPower = pollenServoPID.calculateOutput(bearing, dt);
-                nectarPower = nectarServoPID.calculateOutput(nectarAngle, dt);
+//                nectarServoPID.setTarget(nectarTarget);
+//
+//                pollenPower = pollenServoPID.calculateOutput(bearing, dt);
+//                nectarPower = nectarServoPID.calculateOutput(nectarAngle, dt);
             }
 
-            scoringSubsystem.setPollenTurretServoPower(pollenPower);
-            scoringSubsystem.setNectarTurretServoPower(nectarPower);
+//            scoringSubsystem.setPollenTurretServoPower(pollenPower);
+//            scoringSubsystem.setNectarTurretServoPower(nectarPower);
 
             panelsTelemetry.addData("Tuning Mode (0=Manual, 1=PID, 2=Vision)", TUNING_MODE);
             panelsTelemetry.addData("Pollen Target Angle", pollenServoPID.getTarget());
-            panelsTelemetry.addData("Pollen Current Angle", pollenAngle);
+//            panelsTelemetry.addData("Pollen Current Angle", pollenAngle);
             panelsTelemetry.addData("Pollen Servo Power", pollenPower);
             panelsTelemetry.addData("Nectar Target Angle", nectarServoPID.getTarget());
-            panelsTelemetry.addData("Nectar Current Angle", nectarAngle);
+//            panelsTelemetry.addData("Nectar Current Angle", nectarAngle);
             panelsTelemetry.addData("Nectar Servo Power", nectarPower);
-            panelsTelemetry.addData("AprilTag Bearing", bearing);
+//            panelsTelemetry.addData("AprilTag Bearing", bearing);
             panelsTelemetry.update(telemetry);
         }
     }

@@ -7,20 +7,20 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 public class Constants {
     // Drive
     public static RevHubOrientationOnRobot.LogoFacingDirection CONTROL_HUB_LOGO_FACING_DIRECTION = RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
-    public static RevHubOrientationOnRobot.UsbFacingDirection CONTROL_HUB_USB_FACING_DIRECTION = RevHubOrientationOnRobot.UsbFacingDirection.DOWN;
+    public static RevHubOrientationOnRobot.UsbFacingDirection CONTROL_HUB_USB_FACING_DIRECTION = RevHubOrientationOnRobot.UsbFacingDirection.UP;
     public static String TEAM = "R";
 
     // Intake
     public static double INTAKE_MOTOR_POWER = 1;
-    public static double REVERSE_INTAKE_MOTOR_POWER = 0.5;
+    public static double REVERSE_INTAKE_MOTOR_POWER = 1;
     public static double OUT_TAKE_TIME = 0.2;
-    public static double FLOWER_RIGHT_SERVO_DOWN = 0.8022;
-    public static double FLOWER_RIGHT_SERVO_UP = 0.4317;
-    public static double FLOWER_LEFT_SERVO_DOWN = 0.6094;
-    public static double FLOWER_LEFT_SERVO_UP = 0.2394;
+    public static double FLOWER_RIGHT_SERVO_DOWN = 0.28;
+    public static double FLOWER_RIGHT_SERVO_UP = 0.64;
+    public static double FLOWER_LEFT_SERVO_DOWN = 0.28;
+    public static double FLOWER_LEFT_SERVO_UP = 0.64;
 
     // Storage
-    public static double POLLEN_GATE_OPEN_POSITION = 0.6;
+    public static double POLLEN_GATE_OPEN_POSITION = 0.38;
     public static double POLLEN_GATE_CLOSE_POSITION = 0.1;
     public static double LEFT_NECTAR_GATE_OPEN_POSITION = 0.6;
     public static double LEFT_NECTAR_GATE_CLOSE_POSITION = 0.6;
@@ -31,7 +31,7 @@ public class Constants {
     public static double COLOR_SENSOR_COLOR_THRESHOLD = 20.0;
     public static double DISTANCE_SENSOR_THRESHOLD = 3.0;
     public static double TRANSFER_MOTOR_POWER = 1;
-    public static double REVERSE_TRANSFER_MOTOR_POWER = 0.5;
+    public static double REVERSE_TRANSFER_MOTOR_POWER = 1;
         // Color
         public static double YELLOW_LOWER_BOUND = 40;
         public static double YELLOW_UPPER_BOUND = 150;
@@ -46,8 +46,8 @@ public class Constants {
     public static double POLLEN_VELOCITY_MULTIPLIER = 0.06;
     public static double NECTAR_VELOCITY_MULTIPLIER = 0.07;
     public static double ALIGN_IMU_TIME = 0.6;
-    public static double ALIGN_APRIL_TAG_TIME = 0.5;
-    public static double SHOOTING_TIME = 0.4;
+    public static double ALIGN_APRIL_TAG_TIME = 0.3;
+    public static double SHOOTING_TIME = 1.75;
 
     public static double POLLEN_SERVO_KP = 0.003, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0.000000004, POLLEN_SERVO_KF = 0.06;
   // Pollen shooter velocity control (values from ShootingTest)
@@ -66,11 +66,11 @@ public class Constants {
     public static double POLLEN_ALIGN_TIMEOUT = 1;             // give up if not up to speed by then
 
     // Pollen turret AprilTag alignment (copy the kp/ki/kd/kf/reverse you tuned in CameraTest)
-    public static double POLLEN_TURRET_TAG_KP = 0.003;
+    public static double POLLEN_TURRET_TAG_KP = 0.005;
     public static double POLLEN_TURRET_TAG_KI = 0.0;
-    public static double POLLEN_TURRET_TAG_KD = 0.000000004;
+    public static double POLLEN_TURRET_TAG_KD = 0;
     public static double POLLEN_TURRET_TAG_KF = 0.06;
-    public static boolean POLLEN_TURRET_TAG_REVERSED = true;
+    public static boolean POLLEN_TURRET_TAG_REVERSED = false;
     public static double NECTAR_SERVO_KP = 0.06, NECTAR_SERVO_KI = 0.0001, NECTAR_SERVO_KD = 0.005, NECTAR_SERVO_KF = 0.0;
     public static double POLLEN_MOTOR_KP = 0.5, POLLEN_MOTOR_KI = 0.0001, POLLEN_MOTOR_KD = 0.005, POLLEN_MOTOR_KF = 0.005;
     public static double NECTAR_MOTOR_KP = 0.5, NECTAR_MOTOR_KI = 0.0001, NECTAR_MOTOR_KD = 0.005, NECTAR_MOTOR_KF = 0.005;

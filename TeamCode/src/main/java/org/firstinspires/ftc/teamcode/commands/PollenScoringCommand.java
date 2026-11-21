@@ -41,14 +41,12 @@ public class PollenScoringCommand extends CommandBase {
     private final PIDController turretController;
     private final ElapsedTime stateTimer = new ElapsedTime();
     private final ElapsedTime loopTimer = new ElapsedTime();
-    private final Follower follower;
 
     private State state = State.ALIGN;
 
-    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, Follower follower) {
+    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem) {
         this.scoringSubsystem = scoringSubsystem;
         this.storageSubsystem = storageSubsystem;
-        this.follower = follower;
 
         turretController = new PIDController(POLLEN_TURRET_TAG_KP, POLLEN_TURRET_TAG_KI, POLLEN_TURRET_TAG_KD, POLLEN_TURRET_TAG_KF);
 

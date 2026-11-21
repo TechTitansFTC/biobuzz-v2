@@ -22,8 +22,9 @@ import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp Main")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp Main", group="Main")
 public class TeleOp extends OpMode {
     MecanumDriveSubsystem mecanumDriveSubsystem;
     IntakeSubsystem intakeSubsystem;
@@ -51,13 +52,13 @@ public class TeleOp extends OpMode {
         // Subsystems
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,imu,telemetry);
         intakeSubsystem = new IntakeSubsystem(hardwareMap, telemetry);
-        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
+        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, follower);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
         flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
-        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, follower);
+        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
         reverseCommand = new ReverseCommand(storageSubsystem, intakeSubsystem);
@@ -75,6 +76,12 @@ public class TeleOp extends OpMode {
                 .whenHeld(flowerIntakeCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenHeld(reverseCommand);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+                .whenPressed(() -> {
+                    Constants.TEAM = "B";});
+        gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whenPressed(() -> {
+                    Constants.TEAM = "R";});
     }
 
     @Override

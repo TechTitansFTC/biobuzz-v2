@@ -21,19 +21,19 @@ public class AutonomousPaths {
     private double[] garden2;
     private double[] park;
     public AutonomousPaths() {
-        initial = new double[]{56, 9, 0}; // x, y, heading
+        initial = new double[]{57, 9, 90}; // x, y, heading
         down = new double[]{58, 33, 90};
         middle = new double[]{9, 93, 90};
         center = new double[]{80, 72, 0};
         up = new double[]{58, 111, 270};
-        flowerUp1 = new double[]{48, 123, 90};
+        flowerUp1 = new double[]{48, 115, 90};
         flowerUp2 = new double[]{48, 133, 90};
-        flowerDown1 = new double[]{20, 48, 180};
+        flowerDown1 = new double[]{26, 48, 180};
         flowerDown2 = new double[]{12.5, 48, 180};
         garden1 = new double[]{23, 10, 180};
         garden2 = new double[]{10, 10, 180};
         park = new double[]{9, 95, 90};
-        upDownControl = new double[]{72, 72, 0};
+        upDownControl = new double[]{80, 72, 0};
         upGardenControl = new double[] {6, 15, 0};
         downFlowerUpControl = new double[] {0, 41, 0};
         downParkControl = new double[] {29, 21, 0};

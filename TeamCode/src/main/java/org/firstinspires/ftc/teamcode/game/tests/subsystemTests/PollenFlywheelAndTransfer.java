@@ -14,13 +14,13 @@ public class PollenFlywheelAndTransfer extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        ScoringSubsystem scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
-        StorageSubsystem storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
+//        ScoringSubsystem scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, follower);
+//        StorageSubsystem storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
 
         waitForStart();
         while (opModeIsActive()) {
-            scoringSubsystem.setPollenTurretMotorPower(pollenMotorPower);
-            storageSubsystem.setTransferMotorPower(Constants.TRANSFER_MOTOR_POWER);
+//            scoringSubsystem.setPollenTurretMotorPower(pollenMotorPower);
+//            storageSubsystem.setTransferMotorPower(Constants.TRANSFER_MOTOR_POWER);
         }
     }
 }

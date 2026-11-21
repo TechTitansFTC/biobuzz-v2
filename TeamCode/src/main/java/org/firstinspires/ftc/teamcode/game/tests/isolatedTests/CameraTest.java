@@ -27,10 +27,10 @@ import java.util.List;
 @TeleOp(name="Camera Test")
 @Configurable
 public class CameraTest extends LinearOpMode {
-    public static double kp = 0;
+    public static double kp = 0.003;
     public static double ki = 0;
-    public static double kd = 0;
-    public static double kf = 0;
+    public static double kd = 0.000000004;
+    public static double kf = 0.06;
     public static boolean reverse = false;
     @Override
     public void runOpMode() {
