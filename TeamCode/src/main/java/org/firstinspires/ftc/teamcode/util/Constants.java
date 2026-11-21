@@ -63,7 +63,7 @@ public class Constants {
     public static boolean POLLEN_SHOOTER_MOTOR_REVERSED = true;     // flips which way the wheel spins
     public static boolean POLLEN_SHOOTER_ENCODER_REVERSED = true;   // flips only the RPM reading
     public static double NOMINAL_VOLTAGE = 12.0;
-    public static double POLLEN_ALIGN_TIMEOUT = 3.0;             // give up if not up to speed by then
+    public static double POLLEN_ALIGN_TIMEOUT = 1;             // give up if not up to speed by then
 
     // Pollen turret AprilTag alignment (copy the kp/ki/kd/kf/reverse you tuned in CameraTest)
     public static double POLLEN_TURRET_TAG_KP = 0.003;
@@ -85,7 +85,7 @@ public class Constants {
 
     // Autonomous
     public static double PARK_TIME = 5.0;
-    public static double SHOOTER_SPIN_UP_TIME = 3.0;
+    public static double SHOOTER_SPIN_UP_TIME = 0.8;
     public static double AUTO_INTAKE_TIME = 1.0;
     public static double APRIL_TAG_ALIGN_DETECTION_TIME = 1.0;
 }

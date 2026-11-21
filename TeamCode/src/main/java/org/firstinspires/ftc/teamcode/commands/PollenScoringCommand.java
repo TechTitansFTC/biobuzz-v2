@@ -11,6 +11,7 @@ import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_TURRET_TAG_RE
 import static org.firstinspires.ftc.teamcode.util.Constants.SHOOTING_TIME;
 import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
 
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.command.CommandBase;
@@ -40,12 +41,14 @@ public class PollenScoringCommand extends CommandBase {
     private final PIDController turretController;
     private final ElapsedTime stateTimer = new ElapsedTime();
     private final ElapsedTime loopTimer = new ElapsedTime();
+    private final Follower follower;
 
     private State state = State.ALIGN;
 
-    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem) {
+    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, Follower follower) {
         this.scoringSubsystem = scoringSubsystem;
         this.storageSubsystem = storageSubsystem;
+        this.follower = follower;
 
         turretController = new PIDController(POLLEN_TURRET_TAG_KP, POLLEN_TURRET_TAG_KI, POLLEN_TURRET_TAG_KD, POLLEN_TURRET_TAG_KF);
 
@@ -77,14 +80,13 @@ public class PollenScoringCommand extends CommandBase {
                 storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
                 storageSubsystem.setTransferMotorPower(0);
 
-                if (scoringSubsystem.isPollenShooterAtSpeed()) {
+                if (scoringSubsystem.isPollenShooterAtSpeed() && stateTimer.seconds() >= POLLEN_ALIGN_TIMEOUT) {
                     storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
                     storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
                     stateTimer.reset();
                     state = State.SHOOT;
-                } else if (stateTimer.seconds() >= POLLEN_ALIGN_TIMEOUT) {
-                    state = State.DONE; // never got up to speed; don't shoot
                 }
+
                 break;
 
             case SHOOT:

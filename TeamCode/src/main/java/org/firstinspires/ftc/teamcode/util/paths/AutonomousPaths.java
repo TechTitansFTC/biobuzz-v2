@@ -5,6 +5,11 @@ import java.util.Arrays;
 public class AutonomousPaths {
     private double[] initial;
     private double[] down;
+    private double[] upDownControl;
+    private double[] upGardenControl;
+    private double[] downFlowerUpControl;
+    private double[] downParkControl;
+    private double[] upFlowerDownControl;
     private double[] middle;
     private double[] center;
     private double[] up;
@@ -17,17 +22,22 @@ public class AutonomousPaths {
     private double[] park;
     public AutonomousPaths() {
         initial = new double[]{56, 9, 0}; // x, y, heading
-        down = new double[]{58, 18, 0};
+        down = new double[]{58, 33, 90};
         middle = new double[]{9, 93, 90};
         center = new double[]{80, 72, 0};
-        up = new double[]{58, 126, 180};
+        up = new double[]{58, 111, 270};
         flowerUp1 = new double[]{48, 123, 90};
         flowerUp2 = new double[]{48, 133, 90};
         flowerDown1 = new double[]{20, 48, 180};
         flowerDown2 = new double[]{12.5, 48, 180};
-        garden1 = new double[]{10, 17, 270};
-        garden2 = new double[]{10, 10, 270};
+        garden1 = new double[]{23, 10, 180};
+        garden2 = new double[]{10, 10, 180};
         park = new double[]{9, 95, 90};
+        upDownControl = new double[]{72, 72, 0};
+        upGardenControl = new double[] {6, 15, 0};
+        downFlowerUpControl = new double[] {0, 41, 0};
+        downParkControl = new double[] {29, 21, 0};
+        upFlowerDownControl = new double[] {12, 112, 0};
     }
 
     public double[] getInitial() {
@@ -38,9 +48,9 @@ public class AutonomousPaths {
         return down;
     }
 
-    public double[] getMiddle() {
-        return middle;
-    }
+//    public double[] getMiddle() {
+//        return middle;
+//    }
     public double[] getCenter() { return center; }
 
     public double[] getUp() {
@@ -74,6 +84,11 @@ public class AutonomousPaths {
     public double[] getPark() {
         return park;
     }
+    public double[] getUpDownControl() {return upDownControl;}
+    public double[] getUpGardenControl() {return upGardenControl;}
+    public double[] getDownFlowerUpControl() {return downFlowerUpControl;}
+    public double[] getDownParkControl() {return downParkControl;};
+    public double[] getUpFlowerDownControl() {return upFlowerDownControl;}
 
     public String getPose(double[] pose) {
         if (Arrays.equals(pose, initial)) return "initial";

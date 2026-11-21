@@ -89,6 +89,8 @@ public class RedAuto extends OpMode {
         follower.setY(autonomousPaths.getInitial()[1]);
         follower.setHeading(Math.toRadians(autonomousPaths.getInitial()[2]));
         currPos = autonomousPaths.getInitial();
+
+        org.firstinspires.ftc.teamcode.util.Constants.TEAM = "R";
     }
 
     @Override
@@ -109,44 +111,13 @@ public class RedAuto extends OpMode {
                 break;
             case IDLE:
                 if (30 - autoTimer.seconds() <= PARK_TIME) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getPark()));
+                    if (Arrays.equals(currPos, autonomousPaths.getDown())) {
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getPark(), autonomousPaths.getDownParkControl()));
+                    } else {
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getPark()));
+                    }
                     currPos = autonomousPaths.getPark();
                     currentState = AutoState.PARK;
-                    break;
-                }
-                if (centerDestination.equals("down")) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getDown()));
-                    currPos = autonomousPaths.getDown();
-                    currentState = AutoState.MOVING;
-                    centerDestination = "";
-                    break;
-                }
-                if (centerDestination.equals("up")) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getUp()));
-                    currPos = autonomousPaths.getUp();
-                    currentState = AutoState.MOVING;
-                    centerDestination = "";
-                    break;
-                }
-                if (centerDestination.equals("flowerUp")) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerUp1()));
-                    currPos = autonomousPaths.getFlowerUp1();
-                    currentState = AutoState.MOVING;
-                    centerDestination = "";
-                    break;
-                }
-                if (middleDestination.equals("flowerDown")) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerDown1()));
-                    currPos = autonomousPaths.getFlowerDown1();
-                    currentState = AutoState.MOVING;
-                    middleDestination = "";
-                    break;
-                }
-                if (middleDestination.equals("garden")) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getGarden1()));
-                    currPos = autonomousPaths.getGarden1();
-                    currentState = AutoState.MOVING;
-                    middleDestination = "";
                     break;
                 }
                 if (Arrays.equals(currPos, autonomousPaths.getFlowerUp1()) || Arrays.equals(currPos, autonomousPaths.getFlowerDown1()) || Arrays.equals(currPos, autonomousPaths.getGarden1())) {
@@ -164,14 +135,7 @@ public class RedAuto extends OpMode {
                             currentState = AutoState.SHOOT;
                             break;
                         } else {
-                            if (Arrays.equals(correctShootingPos, autonomousPaths.getUp())) {
-                                centerDestination = "up";
-                            } else {
-                                centerDestination = "down";
-                            }
-                            follower.follow(buildPathChain(currPos, autonomousPaths.getCenter()));
-                            currPos = autonomousPaths.getCenter();
-                            currentState = AutoState.MOVING;
+                            knowTip = false;
                             break;
                         }
                     } else {
@@ -197,12 +161,10 @@ public class RedAuto extends OpMode {
                     garden = false;
                     if (Arrays.equals(currPos, autonomousPaths.getUp())) {
                         middleDestination = "garden";
-                        follower.follow(buildPathChain(currPos, autonomousPaths.getMiddle()));
-                        currPos = autonomousPaths.getMiddle();
-                        currentState = AutoState.MOVING;
-                        break;
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getGarden1(), autonomousPaths.getUpGardenControl()));
+                    } else {
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getGarden1()));
                     }
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getGarden1()));
                     currPos = autonomousPaths.getGarden1();
                     currentState = AutoState.MOVING;
                     break;
@@ -210,13 +172,10 @@ public class RedAuto extends OpMode {
                 if (flowerUp) {
                     flowerUp = false;
                     if (Arrays.equals(currPos, autonomousPaths.getDown())) {
-                        centerDestination = "flowerUp";
-                        follower.follow(buildPathChain(currPos, autonomousPaths.getCenter()));
-                        currPos = autonomousPaths.getCenter();
-                        currentState = AutoState.MOVING;
-                        break;
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getDown(), autonomousPaths.getDownFlowerUpControl()));
+                    } else {
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerUp1()));
                     }
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerUp1()));
                     currPos = autonomousPaths.getFlowerUp1();
                     currentState = AutoState.MOVING;
                     break;
@@ -224,13 +183,10 @@ public class RedAuto extends OpMode {
                 if (flowerDown) {
                     flowerDown = false;
                     if (Arrays.equals(currPos, autonomousPaths.getUp())) {
-                        middleDestination = "flowerDown";
-                        follower.follow(buildPathChain(currPos, autonomousPaths.getMiddle()));
-                        currPos = autonomousPaths.getMiddle();
-                        currentState = AutoState.MOVING;
-                        break;
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getUp(), autonomousPaths.getUpFlowerDownControl()));
+                    } else {
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerDown1()));
                     }
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerDown1()));
                     currPos = autonomousPaths.getFlowerDown1();
                     currentState = AutoState.MOVING;
                     break;
@@ -294,10 +250,11 @@ public class RedAuto extends OpMode {
                     if (scoringSubsystem.getBearing() != 361.0) {
                         tip = false;
                         knowTip = true;
+                        currentState = AutoState.IDLE;
+                        break;
                     } else {
-                        middleDestination = "up";
-                        follower.follow(buildPathChain(currPos, autonomousPaths.getMiddle()));
-                        currPos = autonomousPaths.getMiddle();
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getUp(), autonomousPaths.getUpDownControl()));
+                        currPos = autonomousPaths.getUp();
                         currentState = AutoState.MOVING;
                         break;
                     }
@@ -306,9 +263,8 @@ public class RedAuto extends OpMode {
                         tip = true;
                         knowTip = true;
                     } else {
-                        middleDestination = "down";
-                        follower.follow(buildPathChain(currPos, autonomousPaths.getMiddle()));
-                        currPos = autonomousPaths.getMiddle();
+                        follower.follow(buildPathChain(currPos, autonomousPaths.getDown(), autonomousPaths.getUpDownControl()));
+                        currPos = autonomousPaths.getDown();
                         currentState = AutoState.MOVING;
                         break;
                     }

@@ -57,7 +57,7 @@ public class TeleOp extends OpMode {
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
-        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem);
+        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, follower);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
         reverseCommand = new ReverseCommand(storageSubsystem, intakeSubsystem);
