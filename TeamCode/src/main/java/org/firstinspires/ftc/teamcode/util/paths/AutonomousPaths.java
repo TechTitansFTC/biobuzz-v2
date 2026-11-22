@@ -30,8 +30,8 @@ public class AutonomousPaths {
         flowerUp2 = new double[]{48, 133, 90};
         flowerDown1 = new double[]{26, 48, 180};
         flowerDown2 = new double[]{12.5, 48, 180};
-        garden1 = new double[]{23, 10, 180};
-        garden2 = new double[]{10, 10, 180};
+        garden1 = new double[]{23, 9, 180};
+        garden2 = new double[]{10, 9, 180};
         park = new double[]{9, 95, 90};
         upDownControl = new double[]{80, 72, 0};
         upGardenControl = new double[] {6, 15, 0};

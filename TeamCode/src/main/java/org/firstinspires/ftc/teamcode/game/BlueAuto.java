@@ -83,7 +83,7 @@ public class BlueAuto extends OpMode {
         scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, follower);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
         flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
-        scoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem);
+        scoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
 
@@ -217,7 +217,7 @@ public class BlueAuto extends OpMode {
 //                    flowerSubsystem.setLeftServoPosition(FLOWER_LEFT_SERVO_UP);
                 }
                 if (Arrays.equals(currPos, autonomousPaths.getFlowerDown1())) {
-                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerDown2()));
+                    follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerDown2(),   10));
                     currPos = autonomousPaths.getFlowerDown2();
                 } else if (Arrays.equals(currPos, autonomousPaths.getFlowerUp1())) {
                     follower.follow(buildPathChain(currPos, autonomousPaths.getFlowerUp2()));

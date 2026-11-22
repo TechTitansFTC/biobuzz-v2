@@ -13,10 +13,10 @@ public class Constants {
     // Intake
     public static double INTAKE_MOTOR_POWER = 1;
     public static double REVERSE_INTAKE_MOTOR_POWER = 1;
-    public static double OUT_TAKE_TIME = 0.2;
-    public static double FLOWER_RIGHT_SERVO_DOWN = 0.28;
-    public static double FLOWER_RIGHT_SERVO_UP = 0.64;
-    public static double FLOWER_LEFT_SERVO_DOWN = 0.28;
+    public static double OUT_TAKE_TIME = 0.1;
+    public static double FLOWER_RIGHT_SERVO_DOWN = 0.37;
+    public static double FLOWER_RIGHT_SERVO_UP = 0.74;
+    public static double FLOWER_LEFT_SERVO_DOWN = 0.37 ;
     public static double FLOWER_LEFT_SERVO_UP = 0.64;
 
     // Storage
@@ -47,18 +47,21 @@ public class Constants {
     public static double NECTAR_VELOCITY_MULTIPLIER = 0.07;
     public static double ALIGN_IMU_TIME = 0.6;
     public static double ALIGN_APRIL_TAG_TIME = 0.3;
-    public static double SHOOTING_TIME = 1.75;
+    public static double SHOOTING_TIME = 2.25;
 
     public static double POLLEN_SERVO_KP = 0.003, POLLEN_SERVO_KI = 0, POLLEN_SERVO_KD = 0.000000004, POLLEN_SERVO_KF = 0.06;
   // Pollen shooter velocity control (values from ShootingTest)
     // power = (kS + kV * targetRPM) * (NOMINAL_VOLTAGE / battery) + PID(targetRPM - rpm)
-    public static double POLLEN_SHOOTER_TARGET_RPM = 3200;
+    public static double POLLEN_SHOOTER_TARGET_RPM = 3100;
     public static double POLLEN_SHOOTER_RPM_TOLERANCE = 50;      // shoot once within +/- this
     public static double POLLEN_SHOOTER_KS = 0.0;
     public static double POLLEN_SHOOTER_KV = 0.00017;
-    public static double POLLEN_SHOOTER_KP = 0.0007;
-    public static double POLLEN_SHOOTER_KI = 0.0;
+    public static double POLLEN_SHOOTER_KP = 0.001;
+    public static double POLLEN_SHOOTER_KI = 0.0005;
     public static double POLLEN_SHOOTER_KD = 0.0;
+//    public static double SHOOTER_REGRESSION_A = 3.97;
+//    public static double SHOOTER_REGRESSION_B = 1.12;
+//    public static double SHOOTER_REGRESSION_K = 2774.1;
     public static double POLLEN_SHOOTER_RPM_FILTER = 0.3;        // 1 = no smoothing, lower = smoother
     public static boolean POLLEN_SHOOTER_MOTOR_REVERSED = true;     // flips which way the wheel spins
     public static boolean POLLEN_SHOOTER_ENCODER_REVERSED = true;   // flips only the RPM reading

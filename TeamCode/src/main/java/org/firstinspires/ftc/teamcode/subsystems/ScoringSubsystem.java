@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.game.tests.isolatedTests.ShootingTest.TARGET_RPM;
 import static org.firstinspires.ftc.teamcode.util.Constants.ENCODER_TO_TURRET_RATIO;
 import static org.firstinspires.ftc.teamcode.util.Constants.NOMINAL_VOLTAGE;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_SHOOTER_ENCODER_REVERSED;
@@ -31,6 +32,8 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.util.PIDController;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
@@ -82,7 +85,7 @@ public class ScoringSubsystem extends SubsystemBase {
         this.follower = follower;
         distanceToScore = getDistanceToScore(follower);
 
-        aprilTag = new AprilTagProcessor.Builder().build();
+        aprilTag = new AprilTagProcessor.Builder().setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES).build();
 
         // Same camera settings as CameraTest, where tag detection works.
         pollenTurretCamera = new VisionPortal.Builder()
@@ -132,10 +135,12 @@ public class ScoringSubsystem extends SubsystemBase {
         }
         filteredRpm += Range.clip(POLLEN_SHOOTER_RPM_FILTER, 0.01, 1) * (rawRpm - filteredRpm);
 
+        double distance = getDistance();
         // Re-read gains every loop so Panels edits apply live.
         shooterController.setConstants(POLLEN_SHOOTER_KP, POLLEN_SHOOTER_KI, POLLEN_SHOOTER_KD, 0);
-        if (shooterController.getTarget() != POLLEN_SHOOTER_TARGET_RPM_CHANGE) {
-            shooterController.setTarget(POLLEN_SHOOTER_TARGET_RPM_CHANGE);
+        double target = TARGET_RPM;
+        if (shooterController.getTarget() != target) {
+            shooterController.setTarget(target);
         }
 
         if (!pollenShooterEnabled) {
@@ -228,6 +233,28 @@ public class ScoringSubsystem extends SubsystemBase {
         }
 
         return 361.0;
+    }
+
+    public Double getDistance() {
+        List<AprilTagDetection> detections = aprilTag.getDetections();
+
+        for (AprilTagDetection detection : detections) {
+            if (detection instanceof AprilTagClusterDetection) {
+
+                AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
+
+                if (clusterDet.metadata != null) {
+
+                    if (!clusterDet.metadata.name.startsWith(TEAM)) {
+                        continue;
+                    }
+
+                    return clusterDet.ftcPose.range;
+                }
+            }
+        }
+
+        return -1.0;
     }
 
     public double getPollenTurretAngleDegrees() {

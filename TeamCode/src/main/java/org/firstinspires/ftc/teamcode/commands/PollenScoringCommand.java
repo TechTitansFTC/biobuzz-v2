@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.util.Constants.INTAKE_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_ALIGN_TIMEOUT;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_OPEN_POSITION;
@@ -16,6 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
 import org.firstinspires.ftc.teamcode.util.PIDController;
@@ -37,16 +39,17 @@ public class PollenScoringCommand extends CommandBase {
 
     private final ScoringSubsystem scoringSubsystem;
     private final StorageSubsystem storageSubsystem;
-
+    private final IntakeSubsystem intakeSubsystem;
     private final PIDController turretController;
     private final ElapsedTime stateTimer = new ElapsedTime();
     private final ElapsedTime loopTimer = new ElapsedTime();
 
     private State state = State.ALIGN;
 
-    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem) {
+    public PollenScoringCommand(ScoringSubsystem scoringSubsystem, StorageSubsystem storageSubsystem, IntakeSubsystem intakeSubsystem) {
         this.scoringSubsystem = scoringSubsystem;
         this.storageSubsystem = storageSubsystem;
+        this.intakeSubsystem = intakeSubsystem;
 
         turretController = new PIDController(POLLEN_TURRET_TAG_KP, POLLEN_TURRET_TAG_KI, POLLEN_TURRET_TAG_KD, POLLEN_TURRET_TAG_KF);
 
@@ -64,6 +67,7 @@ public class PollenScoringCommand extends CommandBase {
         // Gate stays closed until the flywheel is up to speed.
         storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
         storageSubsystem.setTransferMotorPower(0);
+        intakeSubsystem.setMotorPower(INTAKE_MOTOR_POWER);
     }
 
     @Override
@@ -77,10 +81,13 @@ public class PollenScoringCommand extends CommandBase {
             case ALIGN:
                 storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
                 storageSubsystem.setTransferMotorPower(0);
+                intakeSubsystem.setMotorPower(INTAKE_MOTOR_POWER);
 
-                if (scoringSubsystem.isPollenShooterAtSpeed() && stateTimer.seconds() >= POLLEN_ALIGN_TIMEOUT) {
+
+                if (stateTimer.seconds() >= POLLEN_ALIGN_TIMEOUT) {
                     storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
                     storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
+                    intakeSubsystem.setMotorPower(INTAKE_MOTOR_POWER);
                     stateTimer.reset();
                     state = State.SHOOT;
                 }
@@ -90,6 +97,7 @@ public class PollenScoringCommand extends CommandBase {
             case SHOOT:
                 storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_OPEN_POSITION);
                 storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
+                intakeSubsystem.setMotorPower(INTAKE_MOTOR_POWER);
 
                 if (stateTimer.seconds() >= SHOOTING_TIME) {
                     state = State.DONE;

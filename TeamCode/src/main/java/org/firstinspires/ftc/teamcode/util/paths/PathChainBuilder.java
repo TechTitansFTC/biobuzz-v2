@@ -13,18 +13,16 @@ public class PathChainBuilder {
 
         return Paths.line(startPose, endPose).linear(startPose, endPose);
     }
-//    public static Path buildPathChain(double[] startPosition, double[] endPosition, double velocityConstraint, double timeoutMs) {
-//        Pose startPose = new Pose(startPosition[0], startPosition[1], Math.toRadians(startPosition[2]));
-//        Pose endPose = new Pose(endPosition[0], endPosition[1], Math.toRadians(endPosition[2]));
-//        AutonomousPaths autonomousPaths = new AutonomousPaths();
-//
-//        return Paths.line(startPose, endPose)
-//                .linear(startPose, endPose)
-//                .with(
-//                        Constants.foresightConfig.maxPathSpeed.at(velocityConstraint),
-//                        Constants.foresightConfig.timeoutConstraint.at(timeoutMs)
-//                );
-//    }
+    public static Path buildPathChain(double[] startPosition, double[] endPosition, double velocityConstraint) {
+        Pose startPose = new Pose(startPosition[0], startPosition[1], Math.toRadians(startPosition[2]));
+        Pose endPose = new Pose(endPosition[0], endPosition[1], Math.toRadians(endPosition[2]));
+        AutonomousPaths autonomousPaths = new AutonomousPaths();
+
+        return Paths.line(startPose, endPose)
+                .linear(startPose, endPose)
+                .with(
+                        Constants.foresightConfig.maxPathSpeed.at(velocityConstraint));
+    }
 
     public static Path buildPathChain(double[] startPosition, double[] endPosition, double[] controlPoint) {
         Pose startPose = new Pose(startPosition[0], startPosition[1], Math.toRadians(startPosition[2]));

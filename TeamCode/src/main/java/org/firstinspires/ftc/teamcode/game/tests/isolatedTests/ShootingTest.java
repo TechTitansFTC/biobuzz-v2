@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode.game.tests.isolatedTests;
 import static org.firstinspires.ftc.teamcode.util.Constants.INTAKE_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_OPEN_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
+
+import android.util.Size;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
@@ -18,7 +21,17 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.util.PIDController;
+import org.firstinspires.ftc.teamcode.util.PanelsFrameSource;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 /**
  * Custom velocity PIDF for the pollen shooter.
@@ -35,7 +48,7 @@ import org.firstinspires.ftc.teamcode.util.PIDController;
 @TeleOp(name="shootingTest")
 @Configurable
 public class ShootingTest extends LinearOpMode {
-    public static double TARGET_RPM = 4000;
+    public static double TARGET_RPM = 3100;
     public static double RPM_STEP = 100;
 
     public static double kS = 0.0;
@@ -54,6 +67,16 @@ public class ShootingTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         TelemetryManager panels = PanelsTelemetry.INSTANCE.getTelemetry();
+        VisionPortal pollenTurretCamera;
+        AprilTagProcessor aprilTag = new AprilTagProcessor.Builder().setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES).build();
+        PanelsFrameSource panelsFrames = new PanelsFrameSource();
+        pollenTurretCamera = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "pollenTurretCamera"))
+                .setCameraResolution(new Size(1280, 800))
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .addProcessor(aprilTag)
+                .addProcessor(panelsFrames)
+                .build();
 
         DcMotorEx pollenShooter = hardwareMap.get(DcMotorEx.class, "pollenShooter");
         pollenShooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -76,6 +99,7 @@ public class ShootingTest extends LinearOpMode {
         boolean aLast = false, upLast = false, downLast = false;
         double maxRpm = 0;
         double filteredRpm = 0;
+        double distance = 36;
 
         waitForStart();
         loopTimer.reset();
@@ -105,6 +129,28 @@ public class ShootingTest extends LinearOpMode {
             if (REVERSE_ENCODER) rawRpm = -rawRpm;
             filteredRpm += Range.clip(RPM_FILTER, 0.01, 1) * (rawRpm - filteredRpm);
             double rpm = filteredRpm;
+
+            List<AprilTagDetection> detections = aprilTag.getDetections();
+
+            for (AprilTagDetection detection : detections) {
+                if (detection instanceof AprilTagClusterDetection) {
+
+                    AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
+
+                    if (clusterDet.metadata != null) {
+
+                        if (!clusterDet.metadata.name.startsWith(TEAM)) {
+                            continue;
+                        }
+
+                        distance = clusterDet.ftcPose.range;
+                    }
+                }
+            }
+
+            telemetry.addData("Distance", distance);
+            panels.addData("Distance", distance);
+
             double target = TARGET_RPM;
             double error = target - rpm;
 
@@ -114,6 +160,7 @@ public class ShootingTest extends LinearOpMode {
             pid.setConstants(kP, kI, kD, 0);
 
             // setTarget() resets the integral, so only call it when the target actually changes.
+            target = TARGET_RPM;
             if (target != pid.getTarget()) {
                 pid.setTarget(target);
             }

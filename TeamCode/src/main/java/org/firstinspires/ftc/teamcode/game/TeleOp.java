@@ -58,7 +58,7 @@ public class TeleOp extends OpMode {
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
-        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem);
+        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, intakeSubsystem);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
         reverseCommand = new ReverseCommand(storageSubsystem, intakeSubsystem);
@@ -77,11 +77,9 @@ public class TeleOp extends OpMode {
         gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenHeld(reverseCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
-                .whenPressed(() -> {
-                    Constants.TEAM = "B";});
+                .whenPressed(() -> Constants.TEAM = "B");
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
-                .whenPressed(() -> {
-                    Constants.TEAM = "R";});
+                .whenPressed(() -> Constants.TEAM = "R");
     }
 
     @Override

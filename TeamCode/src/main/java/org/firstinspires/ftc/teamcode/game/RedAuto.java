@@ -83,7 +83,7 @@ public class RedAuto extends OpMode {
         scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, follower);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
         flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
-        scoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem);
+        scoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, intakeSubsystem);
         flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
 

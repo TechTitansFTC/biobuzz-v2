@@ -35,8 +35,9 @@ public class CameraTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         VisionPortal pollenTurretCamera;
-        CRServo pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurret"); // port 5 servo expansion hub
         AprilTagProcessor aprilTag = new AprilTagProcessor.Builder().build();
+        CRServo pollenTurretServo = hardwareMap.get(CRServo.class, "pollenTurret"); // port 5 servo expansion hub
+
         PanelsFrameSource panelsFrames = new PanelsFrameSource();
 
         PIDController pollenTurretServoController = new PIDController(kp, ki,

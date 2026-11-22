@@ -22,8 +22,6 @@ public class PIDController {
 
     public void setTarget(double target) {
         this.target = target;
-        this.integral = 0.0;
-        this.previousError = 0.0;
     }
 
     public void setConstants(double kp, double ki, double kd, double kf) {
