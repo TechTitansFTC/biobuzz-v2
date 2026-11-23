@@ -13,22 +13,29 @@ import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.commands.ScoringCommand;
+import org.firstinspires.ftc.teamcode.commands.FlowerIntakeCommand;
+import org.firstinspires.ftc.teamcode.commands.ReverseCommand;
+import org.firstinspires.ftc.teamcode.commands.PollenScoringCommand;
 import org.firstinspires.ftc.teamcode.commands.StorageCommand;
+import org.firstinspires.ftc.teamcode.subsystems.FlowerSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp Main")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp Main", group="Main")
 public class TeleOp extends OpMode {
     MecanumDriveSubsystem mecanumDriveSubsystem;
     IntakeSubsystem intakeSubsystem;
     ScoringSubsystem scoringSubsystem;
     StorageSubsystem storageSubsystem;
+    FlowerSubsystem flowerSubsystem;
     DriveCommand driveCommand;
-    ScoringCommand scoringCommand;
+    PollenScoringCommand pollenScoringCommand;
     StorageCommand storageCommand;
+    FlowerIntakeCommand flowerIntakeCommand;
+    ReverseCommand reverseCommand;
     IMU imu;
     GamepadEx gamepadEx;
     Follower follower;
@@ -45,22 +52,34 @@ public class TeleOp extends OpMode {
         // Subsystems
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,imu,telemetry);
         intakeSubsystem = new IntakeSubsystem(hardwareMap, telemetry);
-        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
+        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry, follower);
         storageSubsystem = new StorageSubsystem(hardwareMap, telemetry);
+        flowerSubsystem = new FlowerSubsystem(hardwareMap, telemetry);
 
         // Commands
         driveCommand = new DriveCommand(gamepadEx,mecanumDriveSubsystem);
-        scoringCommand = new ScoringCommand(scoringSubsystem, storageSubsystem, follower);
+        pollenScoringCommand = new PollenScoringCommand(scoringSubsystem, storageSubsystem, intakeSubsystem);
         storageCommand = new StorageCommand(storageSubsystem, intakeSubsystem);
+        flowerIntakeCommand = new FlowerIntakeCommand(flowerSubsystem);
+        reverseCommand = new ReverseCommand(storageSubsystem, intakeSubsystem);
 
         // Bindings
         mecanumDriveSubsystem.setDefaultCommand(driveCommand);
         storageSubsystem.setDefaultCommand(storageCommand);
         gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(() -> mecanumDriveSubsystem.resetIMU());
-        gamepadEx.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(scoringCommand);
-
+        gamepadEx.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(pollenScoringCommand);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(() -> scoringSubsystem.togglePollenShooter()); // flywheel on/off (on by default)
+        gamepadEx.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenHeld(flowerIntakeCommand);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenHeld(reverseCommand);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+                .whenPressed(() -> Constants.TEAM = "B");
+        gamepadEx.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whenPressed(() -> Constants.TEAM = "R");
     }
 
     @Override

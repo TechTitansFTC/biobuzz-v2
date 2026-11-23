@@ -22,8 +22,17 @@ public class PIDController {
 
     public void setTarget(double target) {
         this.target = target;
-        this.integral = 0.0;
-        this.previousError = 0.0;
+    }
+
+    public void setConstants(double kp, double ki, double kd, double kf) {
+        this.kp = kp;
+        this.ki = ki;
+        this.kd = kd;
+        this.kf = kf;
+    }
+
+    public double getTarget() {
+        return target;
     }
 
     public double calculateOutput(double currentValue, double deltaTime) {
@@ -42,7 +51,12 @@ public class PIDController {
         double derivativeTerm = kd * ((error - previousError) / deltaTime);
 
         // Feedforward term
-        double feedforwardTerm = kf;
+        double feedforwardTerm = 0;
+        if (currentValue - target < 0) {
+            feedforwardTerm = kf;
+        } else if (currentValue - target > 0) {
+            feedforwardTerm = -kf;
+        }
 
         // Calculate the output value
         double output = proportionalTerm + integralTerm + derivativeTerm + feedforwardTerm;

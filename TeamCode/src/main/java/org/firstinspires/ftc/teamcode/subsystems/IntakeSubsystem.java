@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final DcMotor intakeMotor;
+
     private final Telemetry telemetry;
 
     public IntakeSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake"); // port 2 motor expansion hub
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.telemetry = telemetry;
 

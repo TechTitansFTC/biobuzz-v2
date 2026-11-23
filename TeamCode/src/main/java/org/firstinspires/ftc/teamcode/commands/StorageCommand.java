@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import static org.firstinspires.ftc.teamcode.util.Constants.INTAKE_MOTOR_POWER;
+import static org.firstinspires.ftc.teamcode.util.Constants.LEFT_NECTAR_GATE_CLOSE_POSITION;
+import static org.firstinspires.ftc.teamcode.util.Constants.NECTAR_GATE_HOLD_NECTAR_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.OUT_TAKE_TIME;
+import static org.firstinspires.ftc.teamcode.util.Constants.POLLEN_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.REVERSE_INTAKE_MOTOR_POWER;
 import static org.firstinspires.ftc.teamcode.util.Constants.REVERSE_TRANSFER_MOTOR_POWER;
+import static org.firstinspires.ftc.teamcode.util.Constants.RIGHT_NECTAR_GATE_CLOSE_POSITION;
 import static org.firstinspires.ftc.teamcode.util.Constants.TEAM;
 import static org.firstinspires.ftc.teamcode.util.Constants.TRANSFER_MOTOR_POWER;
 
@@ -37,6 +41,9 @@ public class StorageCommand extends CommandBase {
 
     @Override
     public void execute() {
+        storageSubsystem.setLeftNectarGateServoPosition(LEFT_NECTAR_GATE_CLOSE_POSITION);
+        storageSubsystem.setRightNectarGateServo(RIGHT_NECTAR_GATE_CLOSE_POSITION);
+        storageSubsystem.setPollenGateServoPosition(POLLEN_GATE_CLOSE_POSITION);
         if (outTaking) {
             if (outTakingTimer.seconds() >= OUT_TAKE_TIME) {
                 outTaking = false;
@@ -46,7 +53,7 @@ public class StorageCommand extends CommandBase {
         int count = 0;
         storageSubsystem.setTransferMotorPower(TRANSFER_MOTOR_POWER);
         if (storageSubsystem.getSensor1Color() != StorageSubsystem.GamePieceColor.NONE) count++;
-        if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED && TEAM.equals("B")) || (storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE && TEAM.equals("R"))) {
+        if ((storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.RED) || (storageSubsystem.getSensor1Color() == StorageSubsystem.GamePieceColor.BLUE)) {
             intakeSubsystem.setMotorPower(-REVERSE_INTAKE_MOTOR_POWER);
             storageSubsystem.setTransferMotorPower(-REVERSE_TRANSFER_MOTOR_POWER);
             outTakingTimer.reset();
